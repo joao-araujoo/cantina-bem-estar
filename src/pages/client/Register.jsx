@@ -1,4 +1,4 @@
-import styles from "../styles.module.css";
+import styles from "../Login/styles.module.css";
 
 export default function Register() {
   return (
@@ -6,7 +6,7 @@ export default function Register() {
       <header>
         <img
           width={100}
-          src="./Logo Branca.png"
+          src="/Logo Branca.png"
           alt="Logo - Cantina Bem Estar (Um contorno branco de um chapéu de chef com um garfo no lado esquerdo, acima do texto 'Cantina Bem Estar')"
         />
       </header>

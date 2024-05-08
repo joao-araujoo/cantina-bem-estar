@@ -1,0 +1,11 @@
+.header {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.main {
+    padding: 50px;
+}

@@ -1,0 +1,41 @@
+.wrapper {
+    width: 200px;
+    height: fit-content;
+    position: absolute;
+    top: 110px;
+    right: 5%;
+    padding: 15px;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px 1px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    z-index: 999;
+}
+
+.wrapper h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.wrapper div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.wrapper div a {
+    color: rgba(0, 0, 0, 0.4);
+    font-weight: 500;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    transition: 0.2s ease-in-out;
+}
+
+.wrapper div a:hover {
+    opacity: 0.5;
+}
+
+.wrapper div a:last-child:hover {
+    color: rgba(255, 0, 0, 0.7);
+}

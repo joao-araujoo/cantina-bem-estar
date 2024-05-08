@@ -1,12 +1,48 @@
-import Footer from "../../components/organisms/Footer/Index";
+import Footer from "../../../components/Footer/Footer";
 import { LiaSearchSolid } from "react-icons/lia";
 import { HiOutlineShoppingBag, HiMiniUser } from "react-icons/hi2";
 import { GiHotMeal } from "react-icons/gi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { FaAppleWhole, FaClock } from "react-icons/fa6";
-import styles from "./home.module.css";
+import styles from "./styles.module.css";
+import { useEffect, useRef, useState } from "react";
+import Cart from "../../../components/Cart/Cart";
+import UserModal from "../../../components/UserModal/UserModal";
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const cartMenu = useRef(null);
+  const hamburgerRef = useRef(null);
+
+  const handleCartMenuClick = () => {
+    const newRightValue =
+      cartMenu.current.style.right === "0px" ? "-350px" : "0px";
+    cartMenu.current.style.right = newRightValue;
+    if (newRightValue === "0px") setIsModalOpen(false);
+  };
+
+  const handleUserButtonClick = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        cartMenu.current &&
+        !cartMenu.current.contains(event.target) &&
+        !hamburgerRef.current.contains(event.target)
+      ) {
+        cartMenu.current.style.right = "-350px";
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
   return (
     <>
       <style>{`
@@ -61,7 +97,7 @@ export default function Home() {
       <header className={styles.header}>
         <img
           width={150}
-          src="./Logo Vermelha - Transparente.png"
+          src="/Logo Vermelha - Transparente.png"
           alt="Logo - Cantina Bem Estar (Um contorno vermelho de um chapéu de chef com um garfo no lado esquerdo, acima do texto 'Cantina Bem Estar')"
         />
         <div className={styles.searchBar}>
@@ -78,14 +114,21 @@ export default function Home() {
           </form>
         </div>
         <div className={styles.buttonsContainer}>
-          <button className="cart-button">
+          <button
+            className="cart-button"
+            onClick={handleCartMenuClick}
+            ref={hamburgerRef}
+          >
             <HiOutlineShoppingBag />
           </button>
-          <button className="user-button">
+          <button className="user-button" onClick={handleUserButtonClick}>
             <HiMiniUser />
           </button>
         </div>
       </header>
+
+      <Cart menuRef={cartMenu} />
+      {isModalOpen && <UserModal />}
 
       <main>
         <Swiper

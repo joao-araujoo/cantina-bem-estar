@@ -6,7 +6,7 @@ export default function Login() {
       <header>
         <img
           width={100}
-          src="./Logo Branca.png"
+          src="/Logo Branca.png"
           alt="Logo - Cantina Bem Estar (Um contorno branco de um chapéu de chef com um garfo no lado esquerdo, acima do texto 'Cantina Bem Estar')"
         />
       </header>

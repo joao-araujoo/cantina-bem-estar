@@ -77,3 +77,23 @@
     place-items: center;
     font-weight: 600;
 }
+
+@media (max-width: 1024px) {
+    .searchBar {
+        width: 50%;
+    }
+
+    .searchBar input {
+        width: 80%;
+    }
+
+    .searchBar button {
+        width: 20%;
+    }
+}
+
+@media (max-width: 768px) {
+    .searchBar {
+        display: none;
+    }
+}

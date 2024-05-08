@@ -1,6 +1,6 @@
 import styles from "./styles.module.css";
 import { FaLocationDot, FaPhone, FaInstagram, FaLinkedinIn, FaFacebookF, FaXTwitter } from "react-icons/fa6";
-import { MdEmail } from "react-ico-ns/md";
+import { MdEmail } from "react-icons/md";
 
 export default function Footer() {
   return (
@@ -45,7 +45,7 @@ export default function Footer() {
                     </a>
                 </div>
             </div>
-            <img src="./Logo Branca.png" alt="Logo - Cantina Bem Estar (Um contorno branco de um chapéu de chef com um garfo no lado esquerdo, acima do texto 'Cantina Bem Estar')" />
+            <img src="/Logo Branca.png" alt="Logo - Cantina Bem Estar (Um contorno branco de um chapéu de chef com um garfo no lado esquerdo, acima do texto 'Cantina Bem Estar')" />
         </div>
 
         <hr />
