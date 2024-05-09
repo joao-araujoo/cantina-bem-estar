@@ -4,7 +4,7 @@
   height: 100dvh;
   padding: 20px;
   background-color: #fff;
-  box-shadow: inset 2px 2px 5px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 2px 5px 5px rgba(0, 0, 0, 0.1);
   position: fixed;
   right: -350px;
   top: 0;

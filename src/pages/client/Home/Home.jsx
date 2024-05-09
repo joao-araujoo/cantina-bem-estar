@@ -3,7 +3,7 @@ import { LiaSearchSolid } from "react-icons/lia";
 import { HiOutlineShoppingBag, HiMiniUser } from "react-icons/hi2";
 import { GiHotMeal } from "react-icons/gi";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { FaAppleWhole, FaClock } from "react-icons/fa6";
+import { FaAppleWhole, FaClock, FaCartShopping } from "react-icons/fa6";
 import styles from "./styles.module.css";
 import { useEffect, useRef, useState } from "react";
 import Cart from "../../../components/Cart/Cart";
@@ -13,6 +13,199 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cartMenu = useRef(null);
   const hamburgerRef = useRef(null);
+
+  const packedLunchs = [
+    {
+      id: 1,
+      name: "Filé de Frango à Parmegiana",
+      price: "R$ 17,00 - 19,00",
+      calories: 350,
+      category: "Tradicional",
+      description: "Acompanha arroz, feijão, fritas e salada",
+      image_path: "/products-images/marmita-combo.jpg",
+    },
+    {
+      id: 2,
+      name: "Salmão Grelhado",
+      price: "R$ 17,00 - 19,00",
+      calories: 400,
+      category: "Fitness",
+      description: "Acompanha quinoa, legumes e salada verde",
+      image_path: "/products-images/marmita-quinoa.webp",
+    },
+    {
+      id: 3,
+      name: "Vegana de Lentilhas",
+      price: "R$ 17,00 - 19,00",
+      calories: 300,
+      category: "Vegana",
+      description: "Acompanha arroz integral, legumes e tofu",
+      image_path: "/products-images/marmita-fitness.jpg",
+    },
+    {
+      id: 1,
+      name: "Filé de Frango à Parmegiana",
+      price: "R$ 17,00 - 19,00",
+      calories: 350,
+      category: "Tradicional",
+      description: "Acompanha arroz, feijão, fritas e salada",
+      image_path: "/products-images/marmita-combo.jpg",
+    },
+    {
+      id: 2,
+      name: "Salmão Grelhado",
+      price: "R$ 17,00 - 19,00",
+      calories: 400,
+      category: "Fitness",
+      description: "Acompanha quinoa, legumes e salada verde",
+      image_path: "/products-images/marmita-quinoa.webp",
+    },
+    {
+      id: 3,
+      name: "Vegana de Lentilhas",
+      price: "R$ 17,00 - 19,00",
+      calories: 300,
+      category: "Vegana",
+      description: "Acompanha arroz integral, legumes e tofu",
+      image_path: "/products-images/marmita-fitness.jpg",
+    },
+    {
+      id: 1,
+      name: "Filé de Frango à Parmegiana",
+      price: "R$ 17,00 - 19,00",
+      calories: 350,
+      category: "Tradicional",
+      description: "Acompanha arroz, feijão, fritas e salada",
+      image_path: "/products-images/marmita-combo.jpg",
+    },
+    {
+      id: 2,
+      name: "Salmão Grelhado",
+      price: "R$ 17,00 - 19,00",
+      calories: 400,
+      category: "Fitness",
+      description: "Acompanha quinoa, legumes e salada verde",
+      image_path: "/products-images/marmita-quinoa.webp",
+    },
+    {
+      id: 3,
+      name: "Vegana de Lentilhas",
+      price: "R$ 17,00 - 19,00",
+      calories: 300,
+      category: "Vegana",
+      description: "Acompanha arroz integral, legumes e tofu",
+      image_path: "/products-images/marmita-fitness.jpg",
+    },
+    {
+      id: 1,
+      name: "Filé de Frango à Parmegiana",
+      price: "R$ 17,00 - 19,00",
+      calories: 350,
+      category: "Tradicional",
+      description: "Acompanha arroz, feijão, fritas e salada",
+      image_path: "/products-images/marmita-combo.jpg",
+    },
+    {
+      id: 2,
+      name: "Salmão Grelhado",
+      price: "R$ 17,00 - 19,00",
+      calories: 400,
+      category: "Fitness",
+      description: "Acompanha quinoa, legumes e salada verde",
+      image_path: "/products-images/marmita-quinoa.webp",
+    },
+    {
+      id: 3,
+      name: "Vegana de Lentilhas",
+      price: "R$ 17,00 - 19,00",
+      calories: 300,
+      category: "Vegana",
+      description: "Acompanha arroz integral, legumes e tofu",
+      image_path: "/products-images/marmita-fitness.jpg",
+    },
+    {
+      id: 1,
+      name: "Filé de Frango à Parmegiana",
+      price: "R$ 17,00 - 19,00",
+      calories: 350,
+      category: "Tradicional",
+      description: "Acompanha arroz, feijão, fritas e salada",
+      image_path: "/products-images/marmita-combo.jpg",
+    },
+    {
+      id: 2,
+      name: "Salmão Grelhado",
+      price: "R$ 17,00 - 19,00",
+      calories: 400,
+      category: "Fitness",
+      description: "Acompanha quinoa, legumes e salada verde",
+      image_path: "/products-images/marmita-quinoa.webp",
+    },
+    {
+      id: 3,
+      name: "Vegana de Lentilhas",
+      price: "R$ 17,00 - 19,00",
+      calories: 300,
+      category: "Vegana",
+      description: "Acompanha arroz integral, legumes e tofu",
+      image_path: "/products-images/marmita-fitness.jpg",
+    },
+    {
+      id: 1,
+      name: "Filé de Frango à Parmegiana",
+      price: "R$ 17,00 - 19,00",
+      calories: 350,
+      category: "Tradicional",
+      description: "Acompanha arroz, feijão, fritas e salada",
+      image_path: "/products-images/marmita-combo.jpg",
+    },
+    {
+      id: 2,
+      name: "Salmão Grelhado",
+      price: "R$ 17,00 - 19,00",
+      calories: 400,
+      category: "Fitness",
+      description: "Acompanha quinoa, legumes e salada verde",
+      image_path: "/products-images/marmita-quinoa.webp",
+    },
+    {
+      id: 3,
+      name: "Vegana de Lentilhas",
+      price: "R$ 17,00 - 19,00",
+      calories: 300,
+      category: "Vegana",
+      description: "Acompanha arroz integral, legumes e tofu",
+      image_path: "/products-images/marmita-fitness.jpg",
+    },
+    {
+      id: 1,
+      name: "Filé de Frango à Parmegiana",
+      price: "R$ 17,00 - 19,00",
+      calories: 350,
+      category: "Tradicional",
+      description: "Acompanha arroz, feijão, fritas e salada",
+      image_path: "/products-images/marmita-combo.jpg",
+    },
+    {
+      id: 2,
+      name: "Salmão Grelhado",
+      price: "R$ 17,00 - 19,00",
+      calories: 400,
+      category: "Fitness",
+      description: "Acompanha quinoa, legumes e salada verde",
+      image_path: "/products-images/marmita-quinoa.webp",
+    },
+    {
+      id: 3,
+      name: "Vegana de Lentilhas",
+      price: "R$ 17,00 - 19,00",
+      calories: 300,
+      category: "Vegana",
+      description: "Acompanha arroz integral, legumes e tofu",
+      image_path: "/products-images/marmita-fitness.jpg",
+    },
+    
+  ];
 
   const handleCartMenuClick = () => {
     const newRightValue =
@@ -201,6 +394,45 @@ export default function Home() {
               hora marcada na Cantina. Experimente a praticidade!
             </p>
           </div>
+        </div>
+
+        <div
+          className="packedLunchs-container"
+          style={{ width: "90%", margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center"}}
+        >
+          {Array.from(
+            packedLunchs.reduce((acc, packedLunch) => {
+              const { category } = packedLunch;
+              if (!acc.has(category)) acc.set(category, []);
+              acc.get(category).push(packedLunch);
+              return acc;
+            }, new Map())
+          ).map(([category, marmitas]) => (
+            <>
+            <h2>{category}</h2>
+            <div
+              key={category}
+              style={{display: "flex", justifyContent: "center", flexWrap: "wrap", padding: "20px", gap: 30}}
+            >
+              {marmitas.map((marmita) => (
+                // caso seja uma das marmitas mais vendidas, colocar uma classe para adicionar o simbolo ao topo
+                <div className={styles.packedLunchCard} key={marmita.id}>
+                  <img
+                    width={100}
+                    height={100}
+                    src={marmita.image_path}
+                    alt={marmita.name}
+                  />
+                  <p>{marmita.name}</p>
+                  <h3>{marmita.price}</h3>
+                  <button>
+                    <FaCartShopping size={20} />
+                  </button>
+                </div>
+              ))}
+            </div>
+            </>
+          ))}
         </div>
       </main>
 

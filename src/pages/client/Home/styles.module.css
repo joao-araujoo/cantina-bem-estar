@@ -78,6 +78,44 @@
     font-weight: 600;
 }
 
+.packedLunchCard {
+    max-width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.packedLunchCard img {
+    width: 100%;
+    height: 150px;
+    border-radius: 3px;
+}
+
+.packedLunchCard p {
+    text-align: center;
+    font-size: 15px;
+}
+
+.packedLunchCard h3 {
+    font-size: 17px;
+}
+
+.packedLunchCard button {
+    width: 100%;
+    background-color: #e34534;
+    border: none;
+    color: #fff;
+    padding: 5px;
+    display: grid;
+    place-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 @media (max-width: 1024px) {
     .searchBar {
         width: 50%;
