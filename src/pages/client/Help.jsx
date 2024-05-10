@@ -1,5 +1,9 @@
+import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
+
 export default function Help() {
   return (
-    <div>Help</div>
+    <>
+      <SectionsContentHeader title="Ajuda" />
+    </>
   )
 }

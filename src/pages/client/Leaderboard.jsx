@@ -1,5 +1,9 @@
+import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
+
 export default function Leaderboard() {
   return (
-    <div>Leaderboard</div>
+    <>
+      <SectionsContentHeader title="Placar de Líderes" />
+    </>
   )
 }

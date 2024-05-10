@@ -1,5 +1,9 @@
+import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
+
 export default function Cart() {
   return (
-    <div>Cart</div>
+    <>
+      <SectionsContentHeader title="Finalize sua Compra!" />
+    </>
   )
 }

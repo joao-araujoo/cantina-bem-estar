@@ -1,5 +1,9 @@
+import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
+
 export default function Account() {
   return (
-    <div>Account</div>
+    <>
+      <SectionsContentHeader title="Minha Conta" />
+    </>
   )
 }

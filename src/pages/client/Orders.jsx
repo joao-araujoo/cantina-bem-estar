@@ -1,5 +1,9 @@
+import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
+
 export default function Orders() {
   return (
-    <div>Orders</div>
-  )
+    <>
+      <SectionsContentHeader title="Meus Pedidos" />
+    </>
+  );
 }
