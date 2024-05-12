@@ -16,3 +16,9 @@
     color: #000;
     font-weight: 500;
 }
+
+@media (max-width: 768px) {
+    .wrapper {
+        flex-direction: column;
+    }
+}

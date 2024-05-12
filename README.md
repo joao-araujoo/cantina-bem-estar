@@ -3,9 +3,12 @@
 Website para pedidos e gestão de marmitas 
 
 - Home
-    - Carrinho
-    - Modal perfil
+    - Cards do carrinho
+    - Searchbar funcionar
+    - Modal de produtos
 - Sections
     - Finalizar pedido
     - Pedidos
     - Leaderboard
+    - Help
+- Sistema de Login 

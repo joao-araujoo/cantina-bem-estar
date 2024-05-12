@@ -1,0 +1,23 @@
+.wrapper {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-top: 15px;
+}
+
+.wrapper p {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.wrapper span {
+    color: rgba(0, 0, 0, 0.75);
+    font-weight: 500;
+}
+
+.pending {
+    color: #E34534 !important;
+}
+
+.delivered {
+    color: #73A73F !important;
+}

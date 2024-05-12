@@ -4,6 +4,7 @@
     padding: 2rem 2rem 1rem 2rem;
     background-color: var(--primary-color);
     color: #fff;
+    margin-top: 100px;
 }
 
 .wrapper h2 {
@@ -16,6 +17,7 @@
     font-weight: 400;
     text-align: justify;
     text-overflow: ellipsis;
+    user-select: text;
 }
 
 .wrapper span {
