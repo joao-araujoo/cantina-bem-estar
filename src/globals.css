@@ -17,13 +17,5 @@
 }
 
 ::-webkit-scrollbar {
-    width: 5px;
-    background: transparent;
-    scrollbar-width: thin;
-    -ms-overflow-style: thin;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #e34534;
+    display: none;
 }
