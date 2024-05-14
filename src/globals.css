@@ -15,3 +15,15 @@
 ::selection {
     background-color: rgba(255, 255, 255, .2);
 }
+
+::-webkit-scrollbar {
+    width: 5px;
+    background: transparent;
+    scrollbar-width: thin;
+    -ms-overflow-style: thin;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e34534;
+}

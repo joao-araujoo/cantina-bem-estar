@@ -29,6 +29,10 @@ tr {
   border-radius: 10px;
 }
 
+thead th:nth-child(2) {
+  text-align: left;
+}
+
 tbody tr:nth-child(1) td:first-child {
   color: #e2aa44;
 }
@@ -48,7 +52,6 @@ tbody tr:last-child {
 .userColumn {
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 
 .userImage {
@@ -56,4 +59,16 @@ tbody tr:last-child {
   height: 40px;
   margin-right: 10px;
   border-radius: 50%;
+}
+
+@media (max-width: 425px) {
+  .userImage {
+    width: 25px;
+    height: 25px;
+  }
+
+  th, td {
+    font-size: 11px;
+    padding: 10px;
+  }
 }

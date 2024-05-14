@@ -86,12 +86,12 @@ export default function Leaderboard() {
               <tr key={cliente.nome}>
                 <td>#{cliente.ranking}</td>
                 <td className={styles.userColumn}>
-                  <img
-                    src={cliente.caminho_imagem}
-                    alt={cliente.nome}
-                    className={styles.userImage}
-                  />
-                  {cliente.nome}
+                    <img
+                      src={cliente.caminho_imagem}
+                      alt={cliente.nome}
+                      className={styles.userImage}
+                    />
+                    {cliente.nome}
                 </td>
                 <td>{cliente.qtd_pedidos}</td>
               </tr>

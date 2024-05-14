@@ -3,6 +3,7 @@ import "./styles.css";
 // import CartItem from "./CartItem/CartItem";
 import PaymentSection from "./PaymentSection/PaymentSection";
 import CheckoutContainer from "./CheckoutContainer/CheckoutContainer";
+import CartItem from "./CartItem/CartItem";
 
 // eslint-disable-next-line react/prop-types
 export default function Cart({ menuRef }) {
@@ -14,13 +15,11 @@ export default function Cart({ menuRef }) {
         <h2>Meu carrinho</h2>
       </header>
       <div className="cart-items">
-        {/* {cart.length > 0 ? (
-          cart.map((product) => (
-            <CartItem productObject={product} key={product.id} />
-          ))
-        ) : (
-          <h2>Empty Cart =(</h2>
-        )} */}
+        <CartItem productObject={{id: 1, name: "Filé de Frango", category: "Tradicionais", price: "R$ 17,00", image_path: "/products-images/marmita-combo.jpg"}} />
+        <CartItem productObject={{id: 1, name: "Berinjela", category: "Veganas", price: "R$ 17,00", image_path: "/products-images/marmita-quinoa.webp"}} />
+        <CartItem productObject={{id: 1, name: "Batata doce", category: "Fitness", price: "R$ 17,00", image_path: "/products-images/marmita-fitness.jpg"}} />
+        <CartItem productObject={{id: 1, name: "Coca-Cola", category: "Bebidas", price: "R$ 5,00", image_path: "/products-images/coca-cola.webp"}} />
+        <CartItem productObject={{id: 1, name: "Açai", category: "Sobremesas", price: "R$ 13,00", image_path: "/products-images/acai.jpg"}} />
       </div>
 
       <PaymentSection />

@@ -22,7 +22,11 @@
   width: 100%;
   max-height: 70vh;
   overflow-y: scroll;
+  margin-top: 25px;
+}
 
+.cart-menu .cart-items::-webkit-scrollbar {
+  display: none;
 }
 
 .cart-menu-bar {
