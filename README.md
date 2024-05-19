@@ -3,12 +3,13 @@
 Website para pedidos e gestão de marmitas 
 
 - Home
-    - Cards do carrinho
-    - Searchbar funcionar
-    - Modal de produtos
+    - ~~Cards do carrinho~~ ✅
+    - ~~Searchbar funcionar~~ ✅
+    - Modal de produtos ❌
 - Sections
-    - Finalizar pedido
-    - Pedidos
-    - Leaderboard
-    - Help
-- Sistema de Login 
+    - Finalizar pedido ❌
+    - ~~Pedidos~~ (Conectar com API) 
+    - ~~Leaderboard~~ (Conectar com API)
+    - Minha Conta ❌
+    - Help ❌
+- Sistema de Login ❌
