@@ -107,7 +107,7 @@ export default function Orders() {
             background: "none",
             fontSize: "17px",
             marginRight: "20px",
-            fontWeight: 500
+            fontWeight: 500,
           }}
         >
           Todos
@@ -122,7 +122,7 @@ export default function Orders() {
             background: "none",
             fontSize: "17px",
             marginRight: "20px",
-            fontWeight: 500
+            fontWeight: 500,
           }}
         >
           Pendente
@@ -137,7 +137,7 @@ export default function Orders() {
             background: "none",
             fontSize: "17px",
             marginRight: "20px",
-            fontWeight: 500
+            fontWeight: 500,
           }}
         >
           Entregue
