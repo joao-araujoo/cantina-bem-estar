@@ -18,6 +18,14 @@
     color: #E34534 !important;
 }
 
+.proccess {
+    color: #e39734 !important;
+}
+
+.finished {
+    color: #349de3 !important;
+}
+
 .delivered {
     color: #73A73F !important;
 }
