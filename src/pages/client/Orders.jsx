@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import OrderCard from "../../components/OrderCard/OrderCard";
 import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
 
@@ -81,10 +82,23 @@ export default function Orders() {
           Entregue
         </button>
       </div>
-      {/* Mapeia apenas os pedidos filtrados */}
-      {filteredOrders.map((order) => (
-        <OrderCard orderData={order} key={order.id_pedido} />
-      ))}
+      {/* Verifica se há pedidos filtrados */}
+      {filteredOrders.length > 0 ? (
+        filteredOrders.map((order) => (
+          <OrderCard orderData={order} key={order.id_pedido} />
+        ))
+      ) : (
+        <div style={{ textAlign: "center", marginTop: "50px" }}>
+          <img src="/no-orders.svg" alt="No orders" width="280px"/>
+          <h2>Ainda não há pedidos!</h2>
+          <p>
+            Não sabe o que escolher?{" "}
+            <Link to="/" style={{ color: "#E34534", textDecoration: "none", fontWeight: "600" }}>
+              Conheça nossas queridinhas da casa!
+            </Link>
+          </p>
+        </div>
+      )}
     </>
   );
 }
