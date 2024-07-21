@@ -19,3 +19,14 @@
 ::-webkit-scrollbar {
     display: none;
 }
+
+.phone-input-container {
+    width: 100%;
+    margin-bottom: 30px; /* Espaçamento abaixo do input de telefone */
+}
+
+.phone-input {
+    width: 100% !important; /* Garante que o PhoneInput ocupe 100% da largura */
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Mesma cor de borda dos outros inputs */
+}

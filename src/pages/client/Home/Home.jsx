@@ -1,20 +1,24 @@
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Footer from "../../../components/Footer/Footer";
 import { LiaSearchSolid } from "react-icons/lia";
 import { HiOutlineShoppingBag, HiMiniUser } from "react-icons/hi2";
 import { GiHotMeal } from "react-icons/gi";
-import { Swiper, SwiperSlide } from "swiper/react";
 import { FaAppleWhole, FaClock, FaCartShopping } from "react-icons/fa6";
+import { FiLogIn } from "react-icons/fi";
+import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./styles.module.css";
-import { useEffect, useRef, useState } from "react";
 import Cart from "../../../components/Cart/Cart";
 import UserModal from "../../../components/UserModal/UserModal";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const cartMenu = useRef(null);
   const hamburgerRef = useRef(null);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const navigate = useNavigate();
 
   const packedLunchs = [
     {
@@ -289,6 +293,16 @@ export default function Home() {
     },
   ];
 
+  useEffect(() => {
+    // Verifica se o usuário está autenticado
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   const handleCartMenuClick = () => {
     const newRightValue =
       cartMenu.current.style.right === "0px" ? "-350px" : "0px";
@@ -297,7 +311,11 @@ export default function Home() {
   };
 
   const handleUserButtonClick = () => {
-    setIsModalOpen(!isModalOpen);
+    if (isLoggedIn) {
+      setIsModalOpen(!isModalOpen);
+    } else {
+      navigate("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
+    }
   };
 
   const handleSearchInputChange = (event) => {
@@ -382,7 +400,7 @@ export default function Home() {
         <img
           width={150}
           src="/Logo Vermelha - Transparente.png"
-          alt="Logo - Cantina Bem Estar (Um contorno vermelho de um chapéu de chef com um garfo no lado esquerdo, acima do texto 'Cantina Bem Estar')"
+          alt="Logo - Cantina Bem Estar"
         />
         <div className={styles.searchBar}>
           <form>
@@ -439,7 +457,7 @@ export default function Home() {
             <HiOutlineShoppingBag />
           </button>
           <button className="user-button" onClick={handleUserButtonClick}>
-            <HiMiniUser />
+            {isLoggedIn ? <HiMiniUser /> : <FiLogIn />}
           </button>
         </div>
       </header>
@@ -500,22 +518,22 @@ export default function Home() {
           <div className="card">
             <div className="title">
               <GiHotMeal color="#e34534" size={50} />
-              <h2>Variedade de Opções</h2>
+              <h2>Variedade no Cardápio</h2>
             </div>
             <p>
-              Explore nossa variedade de pratos tradicionais, opções fitness e
-              veganas, criadas para agradar a todos os paladares.
+              Explore uma variedade de pratos que atendem a todos os gostos e
+              necessidades alimentares. A cada semana, novos sabores e opções.
             </p>
           </div>
 
           <div className="card">
             <div className="title">
               <FaClock color="#e34534" size={50} />
-              <h2>Facilidade</h2>
+              <h2>Agilidade no Atendimento</h2>
             </div>
             <p>
-              Faça seu pedido online com facilidade e conveniência, e retire na
-              hora marcada na Cantina. Experimente a praticidade!
+              Receba suas refeições de forma rápida e eficiente para que você
+              possa aproveitar o seu dia sem preocupações.
             </p>
           </div>
         </div>
