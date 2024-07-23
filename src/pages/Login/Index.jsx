@@ -1,19 +1,27 @@
-import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import styles from './styles.module.css';
+// src/pages/Login/Index.js
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { AiOutlineLoading } from "react-icons/ai";
+import styles from "./styles.module.css";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ email, senha }),
       });
@@ -21,23 +29,29 @@ export default function Login() {
       if (response.ok) {
         const data = await response.json();
         if (data.status) {
-          toast.success('Login bem-sucedido!');
-          console.log('Login bem-sucedido:', data.data);
-          // Aqui você pode redirecionar o usuário ou atualizar o estado da aplicação
-          localStorage.setItem('token', data.token); // Salva o token no localStorage
-          localStorage.setItem('user', JSON.stringify(data.data)); // Salva os dados do usuário no localStorage
-          // Redirecionar usuário ou atualizar estado, exemplo:
-          // window.location.href = '/'; // Redireciona para a página principal ou a página desejada
+          // Usa a função de login do AuthContext
+          login(data.data, data.token);
+
+          toast.success("Login bem-sucedido!");
+          setTimeout(() => {
+            if (data.userType === "funcionario") {
+              navigate("/dashboard");
+            } else {
+              navigate("/")
+            }
+          }, 1000);
         } else {
           toast.error(data.msg);
         }
       } else {
         const errorData = await response.json();
-        toast.error(errorData.msg || 'Erro ao fazer login');
+        toast.error(errorData.msg || "Erro ao fazer login");
       }
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      toast.error('Erro ao fazer login. Tente novamente mais tarde.');
+      console.error("Erro ao fazer login:", error);
+      toast.error("Erro ao fazer login. Tente novamente mais tarde.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,7 +84,13 @@ export default function Login() {
             onChange={(e) => setSenha(e.target.value)}
             required
           />
-          <button type="submit">Entrar</button>
+          <button type="submit" disabled={loading}>
+            {loading ? (
+              <AiOutlineLoading className={styles.spinner} />
+            ) : (
+              "Entrar"
+            )}
+          </button>
         </form>
         <ToastContainer />
       </main>

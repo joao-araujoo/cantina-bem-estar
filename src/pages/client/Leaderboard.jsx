@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
 import styles from "./leaderboard.module.css";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Leaderboard() {
   const [clientes, setClientes] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -30,8 +32,8 @@ export default function Leaderboard() {
 
   const topClientes = clientes.slice(0, 5); // Pegar os top 5 clientes
 
-  const clienteSimulado = clientes.find(
-    (cliente) => cliente.nome === "Tim Maia"
+  const clienteSimulado = user && clientes.find(
+    (cliente) => cliente.nome === user.nome
   );
 
   return (
@@ -51,8 +53,9 @@ export default function Leaderboard() {
               <tr key={cliente.nome}>
                 <td>#{cliente.ranking}</td>
                 <td className={styles.userColumn}>
+                  {/* Usar a URL completa da imagem aqui */}
                   <img
-                    src={cliente.caminho_imagem}
+                    src={`http://localhost:3000/${cliente.caminho_imagem}`}
                     alt={cliente.nome}
                     className={styles.userImage}
                   />
@@ -61,13 +64,13 @@ export default function Leaderboard() {
                 <td>{cliente.qtd_pedidos}</td>
               </tr>
             ))}
-            {/* Última linha para o usuário simulado (independente do ranking) */}
+            {/* Última linha para o usuário logado (independente do ranking) */}
             {clienteSimulado && (
               <tr>
                 <td>#{clienteSimulado.ranking}</td>
                 <td className={styles.userColumn}>
                   <img
-                    src={clienteSimulado.caminho_imagem}
+                    src={`http://localhost:3000/${clienteSimulado.caminho_imagem}`}
                     alt={clienteSimulado.nome}
                     className={styles.userImage}
                   />

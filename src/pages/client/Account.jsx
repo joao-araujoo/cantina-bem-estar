@@ -1,25 +1,53 @@
-/* eslint-disable react/prop-types */
 import { useState } from "react";
 import EditProfileForm from "../../components/UserAccount/EditProfileForm/EditProfileForm";
 import ProfileInfo from "../../components/UserAccount/ProfileInfo/ProfileInfo";
 import { HiPencil } from "react-icons/hi";
+import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Account() {
-  const initialUser = {
-    name: "John Doe",
-    email: "john.doe@gmail.com",
-    profilePicture: "/users-images/imagem_cliente_1.webp",
-    ordersQuantity: 0,
-    password: "1234",
-  };
-
-  const [user, setUser] = useState(initialUser);
+  const { user, setUser } = useAuth();
   const [editMode, setEditMode] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSave = (editedInfo) => {
-    console.log("Informações editadas:", editedInfo);
-    setUser((prevUser) => ({ ...prevUser, ...editedInfo }));
-    setEditMode(false);
+  const handleSave = async (editedInfo) => {
+    const dataToSend = {
+      nome: editedInfo.nome || user.nome,
+      email: editedInfo.email || user.email,
+      telefone: editedInfo.telefone || user.telefone,
+      qtd_pedidos: editedInfo.qtd_pedidos || user.qtd_pedidos,
+    };
+
+    if (editedInfo.senha) {
+      dataToSend.senha = editedInfo.senha;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/clientes/${user.id_cliente}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      const data = await response.json();
+
+      if (data.status) {
+        setUser((prevUser) => {
+          const updatedUser = { ...prevUser, ...data.data };
+          // Atualiza o localStorage
+          localStorage.setItem("user", JSON.stringify(updatedUser));
+          return updatedUser;
+        });
+        setEditMode(false);
+        navigate("/sections/account");
+      } else {
+        console.error("Erro ao atualizar perfil:", data.msg);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar perfil:", error);
+    }
   };
 
   return (
@@ -44,7 +72,7 @@ export default function Account() {
           borderRadius: "5px",
         }}
       >
-       <HiPencil /> {editMode ? "Cancelar Edição" : "Editar Perfil"}
+        <HiPencil /> {editMode ? "Cancelar Edição" : "Editar Perfil"}
       </button>
     </div>
   );

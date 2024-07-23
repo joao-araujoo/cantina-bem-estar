@@ -3,6 +3,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { AiOutlineLoading } from "react-icons/ai";
 import styles from "../Login/styles.module.css";
 
 export default function Register() {
@@ -13,6 +14,11 @@ export default function Register() {
   const [telefone, setTelefone] = useState("");
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [fotoPerfilUrl, setFotoPerfilUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const validatePhoneNumber = (number) => {
+    return number.length >= 10;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,31 +33,37 @@ export default function Register() {
       return;
     }
 
-    // Cria o caminho da imagem com base na URL local
-    const caminhoImagem = fotoPerfil ? fotoPerfilUrl : "";
+    if (!validatePhoneNumber(telefone)) {
+      toast.error(
+        "Número de telefone inválido. Certifique-se de incluir o código de área e ter pelo menos 10 dígitos."
+      );
+      return;
+    }
 
-    const userData = {
-      nome,
-      email,
-      senha,
-      telefone,
-      caminho_imagem: caminhoImagem,
-    };
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("nome", nome);
+    formData.append("email", email);
+    formData.append("senha", senha);
+    formData.append("telefone", telefone);
+    if (fotoPerfil) {
+      formData.append("fotoPerfil", fotoPerfil);
+    }
 
     try {
       const response = await fetch("http://localhost:3000/clientes", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(userData),
+        body: formData,
       });
 
       if (response.ok) {
         const data = await response.json();
         if (data.status) {
           toast.success("Registro bem-sucedido!");
-          window.location.href = "/login"; // Redireciona para a página de login
+          setTimeout(() => {
+            window.location.href = "/login"; // Redireciona para a página de login após a mensagem de sucesso
+          }, 2000);
         } else {
           toast.error(data.msg);
         }
@@ -62,6 +74,8 @@ export default function Register() {
     } catch (error) {
       console.error("Erro ao fazer registro:", error);
       toast.error("Erro ao fazer registro. Tente novamente mais tarde.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,6 +151,9 @@ export default function Register() {
             }}
             containerClass="phone-input-container"
             inputClass="phone-input"
+            isValid={(value) => {
+              return validatePhoneNumber(value);
+            }}
           />
 
           {fotoPerfilUrl && (
@@ -148,7 +165,7 @@ export default function Register() {
               />
             </div>
           )}
-          
+
           <label htmlFor="profilePicture">Foto de Perfil</label>
           <input
             type="file"
@@ -157,7 +174,13 @@ export default function Register() {
             onChange={handleFotoPerfilChange}
           />
 
-          <button type="submit">Criar Conta</button>
+          <button type="submit" disabled={loading}>
+            {loading ? (
+              <AiOutlineLoading className={styles.spinner} />
+            ) : (
+              "Criar Conta"
+            )}
+          </button>
         </form>
         <ToastContainer />
       </main>

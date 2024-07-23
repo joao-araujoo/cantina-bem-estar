@@ -4,7 +4,7 @@
     margin: 100px auto;
     height: auto;
     border-radius: 5px;
-    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.25);
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
     font-size: 15px;
 }
 
@@ -38,8 +38,10 @@
     margin-bottom: 30px;
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    width: 100%; /* Garante que o input ocupe 100% da largura do contêiner */
-    box-sizing: border-box; /* Inclui padding e border no cálculo da largura */
+    width: 100%;
+    /* Garante que o input ocupe 100% da largura do contêiner */
+    box-sizing: border-box;
+    /* Inclui padding e border no cálculo da largura */
 }
 
 .wrapper main form button {
@@ -66,6 +68,16 @@
     text-decoration: none;
     font-weight: 700;
     color: #e34534;
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(1turn);
+    }
 }
 
 @media (max-width: 425px) {

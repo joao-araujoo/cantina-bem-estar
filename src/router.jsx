@@ -19,10 +19,10 @@ import Help from "./pages/client/Help";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />, // parcialmente feito
+    element: <Home />,
   },
   {
-    path: "/sections", // TODO
+    path: "/sections",
     element: <SectionsTemplate />,
     children: [
       {
@@ -48,11 +48,11 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/login", // feito
+    path: "/login",
     element: <Login />,
   },
   {
-    path: "/register", // feito
+    path: "/register",
     element: <Register />,
   },
   {

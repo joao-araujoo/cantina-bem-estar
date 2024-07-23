@@ -5,12 +5,12 @@ import styles from "../styles.module.css";
 import { HiPencilAlt } from "react-icons/hi";
 
 export default function EditProfileForm({ user, onSave }) {
-  const [name, setName] = useState(user.name);
+  const [name, setName] = useState(user.nome);
   const [email, setEmail] = useState(user.email);
-  const [profilePicture, setProfilePicture] = useState(user.profilePicture);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [profilePictureFile, setProfilePictureFile] = useState(null);
+  // Mantém o campo para a foto, mas sem funcionalidade de upload
+  const [profilePicture, setProfilePicture] = useState(user.caminho_imagem);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,13 +18,18 @@ export default function EditProfileForm({ user, onSave }) {
       alert("As senhas não coincidem!");
       return;
     }
-    onSave({ name, email, profilePicture, password });
+
+    onSave({
+      nome: name,
+      email: email,
+      senha: password,
+    });
   };
 
   const handleProfilePictureChange = (e) => {
+    // Função removida para evitar alterações
     const file = e.target.files[0];
     if (file) {
-      setProfilePictureFile(file);
       setProfilePicture(URL.createObjectURL(file));
     }
   };
@@ -36,7 +41,7 @@ export default function EditProfileForm({ user, onSave }) {
         <div className={styles.profilePictureWrapper}>
           <img
             src={profilePicture}
-            alt={user.name}
+            alt={user.nome}
             className={styles.profilePicture}
           />
           <label className={styles.editProfilePicture}>
@@ -45,6 +50,7 @@ export default function EditProfileForm({ user, onSave }) {
               type="file"
               onChange={handleProfilePictureChange}
               style={{ display: "none" }}
+              // Função de upload removida
             />
           </label>
         </div>

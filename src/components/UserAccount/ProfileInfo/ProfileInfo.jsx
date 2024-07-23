@@ -7,11 +7,11 @@ export default function ProfileInfo({ user }) {
     <>
       <SectionsContentHeader title="Minha Conta" />
       <div className={styles.wrapper}>
-        <img src={user.profilePicture} alt={user.name} />
-        <div style={{textAlign: "center", fontWeight: "400"}}>
-          <h3>{user.name}</h3>
+        <img src={`http://localhost:3000/${user.caminho_imagem}`} alt={user.nome} />
+        <div style={{ textAlign: "center", fontWeight: "400" }}>
+          <h3>{user.nome}</h3>
           <p>{user.email}</p>
-          <p>{user.ordersQuantity} pedidos</p>
+          <p>{user.qtd_pedidos} pedidos</p>
         </div>
       </div>
     </>
