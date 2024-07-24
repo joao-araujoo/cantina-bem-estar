@@ -35,7 +35,7 @@ export default function Register() {
 
     if (!validatePhoneNumber(telefone)) {
       toast.error(
-        "Número de telefone inválido. Certifique-se de incluir o código de área e ter pelo menos 10 dígitos."
+        "Número de telefone inválido."
       );
       return;
     }

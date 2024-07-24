@@ -14,284 +14,12 @@ import UserModal from "../../../components/UserModal/UserModal";
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const cartMenu = useRef(null);
-  const hamburgerRef = useRef(null);
+  const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const cartMenu = useRef(null);
+  const hamburgerRef = useRef(null);
   const navigate = useNavigate();
-
-  const packedLunchs = [
-    {
-      id: 1,
-      name: "Filé de Frango à Parmegiana",
-      price: "R$ 17,00 - 19,00",
-      calories: 350,
-      category: "Tradicional",
-      description: "Acompanha arroz, feijão, fritas e salada",
-      image_path: "/products-images/marmita-combo.jpg",
-    },
-    {
-      id: 2,
-      name: "Salmão Grelhado",
-      price: "R$ 17,00 - 19,00",
-      calories: 400,
-      category: "Fitness",
-      description: "Acompanha quinoa, legumes e salada verde",
-      image_path: "/products-images/marmita-quinoa.webp",
-    },
-    {
-      id: 3,
-      name: "Vegana de Lentilhas",
-      price: "R$ 17,00 - 19,00",
-      calories: 300,
-      category: "Vegana",
-      description: "Acompanha arroz integral, legumes e tofu",
-      image_path: "/products-images/marmita-fitness.jpg",
-    },
-    {
-      id: 4,
-      name: "Coca-Cola",
-      price: "R$ 5,00",
-      calories: 140,
-      category: "Bebidas",
-      description: "Coca-Cola em lata",
-      image_path: "/products-images/coca-cola.webp",
-    },
-    {
-      id: 5,
-      name: "Açaí",
-      price: "R$ 10,00 - R$ 15,00",
-      calories: 330,
-      category: "Sobremesas",
-      description: "",
-      image_path: "/products-images/acai.jpg",
-    },
-    {
-      id: 1,
-      name: "Filé de Frango à Parmegiana",
-      price: "R$ 17,00 - 19,00",
-      calories: 350,
-      category: "Tradicional",
-      description: "Acompanha arroz, feijão, fritas e salada",
-      image_path: "/products-images/marmita-combo.jpg",
-    },
-    {
-      id: 2,
-      name: "Salmão Grelhado",
-      price: "R$ 17,00 - 19,00",
-      calories: 400,
-      category: "Fitness",
-      description: "Acompanha quinoa, legumes e salada verde",
-      image_path: "/products-images/marmita-quinoa.webp",
-    },
-    {
-      id: 3,
-      name: "Vegana de Lentilhas",
-      price: "R$ 17,00 - 19,00",
-      calories: 300,
-      category: "Vegana",
-      description: "Acompanha arroz integral, legumes e tofu",
-      image_path: "/products-images/marmita-fitness.jpg",
-    },
-    {
-      id: 4,
-      name: "Coca-Cola",
-      price: "R$ 5,00",
-      calories: 140,
-      category: "Bebidas",
-      description: "Coca-Cola em lata",
-      image_path: "/products-images/coca-cola.webp",
-    },
-    {
-      id: 5,
-      name: "Açaí",
-      price: "R$ 10,00 - R$ 15,00",
-      calories: 330,
-      category: "Sobremesas",
-      description: "",
-      image_path: "/products-images/acai.jpg",
-    },
-    {
-      id: 1,
-      name: "Filé de Frango à Parmegiana",
-      price: "R$ 17,00 - 19,00",
-      calories: 350,
-      category: "Tradicional",
-      description: "Acompanha arroz, feijão, fritas e salada",
-      image_path: "/products-images/marmita-combo.jpg",
-    },
-    {
-      id: 2,
-      name: "Salmão Grelhado",
-      price: "R$ 17,00 - 19,00",
-      calories: 400,
-      category: "Fitness",
-      description: "Acompanha quinoa, legumes e salada verde",
-      image_path: "/products-images/marmita-quinoa.webp",
-    },
-    {
-      id: 3,
-      name: "Vegana de Lentilhas",
-      price: "R$ 17,00 - 19,00",
-      calories: 300,
-      category: "Vegana",
-      description: "Acompanha arroz integral, legumes e tofu",
-      image_path: "/products-images/marmita-fitness.jpg",
-    },
-    {
-      id: 4,
-      name: "Coca-Cola",
-      price: "R$ 5,00",
-      calories: 140,
-      category: "Bebidas",
-      description: "Coca-Cola em lata",
-      image_path: "/products-images/coca-cola.webp",
-    },
-    {
-      id: 5,
-      name: "Açaí",
-      price: "R$ 10,00 - R$ 15,00",
-      calories: 330,
-      category: "Sobremesas",
-      description: "",
-      image_path: "/products-images/acai.jpg",
-    },
-    {
-      id: 1,
-      name: "Filé de Frango à Parmegiana",
-      price: "R$ 17,00 - 19,00",
-      calories: 350,
-      category: "Tradicional",
-      description: "Acompanha arroz, feijão, fritas e salada",
-      image_path: "/products-images/marmita-combo.jpg",
-    },
-    {
-      id: 2,
-      name: "Salmão Grelhado",
-      price: "R$ 17,00 - 19,00",
-      calories: 400,
-      category: "Fitness",
-      description: "Acompanha quinoa, legumes e salada verde",
-      image_path: "/products-images/marmita-quinoa.webp",
-    },
-    {
-      id: 3,
-      name: "Vegana de Lentilhas",
-      price: "R$ 17,00 - 19,00",
-      calories: 300,
-      category: "Vegana",
-      description: "Acompanha arroz integral, legumes e tofu",
-      image_path: "/products-images/marmita-fitness.jpg",
-    },
-    {
-      id: 4,
-      name: "Coca-Cola",
-      price: "R$ 5,00",
-      calories: 140,
-      category: "Bebidas",
-      description: "Coca-Cola em lata",
-      image_path: "/products-images/coca-cola.webp",
-    },
-    {
-      id: 5,
-      name: "Açaí",
-      price: "R$ 10,00 - R$ 15,00",
-      calories: 330,
-      category: "Sobremesas",
-      description: "",
-      image_path: "/products-images/acai.jpg",
-    },
-    {
-      id: 1,
-      name: "Filé de Frango à Parmegiana",
-      price: "R$ 17,00 - 19,00",
-      calories: 350,
-      category: "Tradicional",
-      description: "Acompanha arroz, feijão, fritas e salada",
-      image_path: "/products-images/marmita-combo.jpg",
-    },
-    {
-      id: 2,
-      name: "Salmão Grelhado",
-      price: "R$ 17,00 - 19,00",
-      calories: 400,
-      category: "Fitness",
-      description: "Acompanha quinoa, legumes e salada verde",
-      image_path: "/products-images/marmita-quinoa.webp",
-    },
-    {
-      id: 3,
-      name: "Vegana de Lentilhas",
-      price: "R$ 17,00 - 19,00",
-      calories: 300,
-      category: "Vegana",
-      description: "Acompanha arroz integral, legumes e tofu",
-      image_path: "/products-images/marmita-fitness.jpg",
-    },
-    {
-      id: 4,
-      name: "Coca-Cola",
-      price: "R$ 5,00",
-      calories: 140,
-      category: "Bebidas",
-      description: "Coca-Cola em lata",
-      image_path: "/products-images/coca-cola.webp",
-    },
-    {
-      id: 5,
-      name: "Açaí",
-      price: "R$ 10,00 - R$ 15,00",
-      calories: 330,
-      category: "Sobremesas",
-      description: "",
-      image_path: "/products-images/acai.jpg",
-    },
-    {
-      id: 1,
-      name: "Filé de Frango à Parmegiana",
-      price: "R$ 17,00 - 19,00",
-      calories: 350,
-      category: "Tradicional",
-      description: "Acompanha arroz, feijão, fritas e salada",
-      image_path: "/products-images/marmita-combo.jpg",
-    },
-    {
-      id: 2,
-      name: "Salmão Grelhado",
-      price: "R$ 17,00 - 19,00",
-      calories: 400,
-      category: "Fitness",
-      description: "Acompanha quinoa, legumes e salada verde",
-      image_path: "/products-images/marmita-quinoa.webp",
-    },
-    {
-      id: 3,
-      name: "Vegana de Lentilhas",
-      price: "R$ 17,00 - 19,00",
-      calories: 300,
-      category: "Vegana",
-      description: "Acompanha arroz integral, legumes e tofu",
-      image_path: "/products-images/marmita-fitness.jpg",
-    },
-    {
-      id: 4,
-      name: "Coca-Cola",
-      price: "R$ 5,00",
-      calories: 140,
-      category: "Bebidas",
-      description: "Coca-Cola em lata",
-      image_path: "/products-images/coca-cola.webp",
-    },
-    {
-      id: 5,
-      name: "Açaí",
-      price: "R$ 10,00 - R$ 15,00",
-      calories: 330,
-      category: "Sobremesas",
-      description: "",
-      image_path: "/products-images/acai.jpg",
-    },
-  ];
 
   useEffect(() => {
     // Verifica se o usuário está autenticado
@@ -301,6 +29,21 @@ export default function Home() {
     } else {
       setIsLoggedIn(false);
     }
+  }, []);
+
+  useEffect(() => {
+    // Fetch products from API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/produtos");
+        const data = await response.json();
+        setProducts(data.data); // Ajuste feito aqui
+      } catch (error) {
+        console.error("Erro ao buscar produtos:", error);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const handleCartMenuClick = () => {
@@ -321,8 +64,8 @@ export default function Home() {
   const handleSearchInputChange = (event) => {
     const text = event.target.value;
     setSearchText(text);
-    const filteredResults = packedLunchs.filter((item) =>
-      item.name.toLowerCase().includes(text.toLowerCase())
+    const filteredResults = products.filter((item) =>
+      item.nome.toLowerCase().includes(text.toLowerCase())
     );
     setSearchResults(filteredResults.slice(0, 5));
   };
@@ -421,7 +164,7 @@ export default function Home() {
             <div className={styles.searchBarItems}>
               {searchResults.length > 0 ? (
                 searchResults.map((result) => (
-                  <div key={result.id} className={styles.searchBarProduct}>
+                  <div key={result.id_produto} className={styles.searchBarProduct}>
                     <div
                       style={{
                         display: "flex",
@@ -431,13 +174,13 @@ export default function Home() {
                       }}
                     >
                       <img
-                        src={result.image_path}
-                        alt={result.name}
+                        src={result.caminho_imagem}
+                        alt={result.nome}
                         style={{ height: "30px", width: "30px" }}
                       />
-                      <p>{result.name}</p>
+                      <p>{result.nome}</p>
                     </div>
-                    <h4>{result.price}</h4>
+                    <h4>{result.valor_produto}</h4>
                   </div>
                 ))
               ) : (
@@ -549,17 +292,17 @@ export default function Home() {
           }}
         >
           {Array.from(
-            packedLunchs.reduce((acc, packedLunch) => {
-              const { category } = packedLunch;
-              if (!acc.has(category)) acc.set(category, []);
-              acc.get(category).push(packedLunch);
+            products.reduce((acc, packedLunch) => {
+              const { categoria } = packedLunch;
+              if (!acc.has(categoria)) acc.set(categoria, []);
+              acc.get(categoria).push(packedLunch);
               return acc;
             }, new Map())
-          ).map(([category, marmitas]) => (
+          ).map(([categoria, marmitas]) => (
             <>
-              <h2 style={{ marginTop: "20px" }}>{category}</h2>
+              <h2 style={{ marginTop: "20px" }}>{categoria}</h2>
               <div
-                key={category}
+                key={categoria}
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -570,15 +313,15 @@ export default function Home() {
               >
                 {marmitas.map((marmita) => (
                   // caso seja uma das marmitas mais vendidas, colocar uma classe para adicionar o simbolo ao topo
-                  <div className={styles.packedLunchCard} key={marmita.id}>
+                  <div className={styles.packedLunchCard} key={marmita.id_produto}>
                     <img
                       width={100}
                       height={100}
-                      src={marmita.image_path}
-                      alt={marmita.name}
+                      src={marmita.caminho_imagem}
+                      alt={marmita.nome}
                     />
-                    <p>{marmita.name}</p>
-                    <h3>{marmita.price}</h3>
+                    <p>{marmita.nome}</p>
+                    <h3>{marmita.valor_produto}</h3>
                     <button>
                       <FaCartShopping size={20} />
                     </button>
