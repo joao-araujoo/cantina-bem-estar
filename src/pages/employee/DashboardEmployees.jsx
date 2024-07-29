@@ -219,10 +219,7 @@ export default function DashboardFuncionarios() {
                     <option value="2">Funcionário</option>
                   </select>
                 </div>
-                <div className="form-group">
-                  <label>Foto de Perfil</label>
-                  <input type="file" className="form-control" name="fotoPerfil" onChange={handleChange} />
-                </div>
+                
                 <button
                   type="submit"
                   className="btn btn-danger"
