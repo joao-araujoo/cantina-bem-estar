@@ -1,0 +1,74 @@
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #e34534;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+}
+
+.logo {
+  width: 150px;
+}
+
+.sidebar a {
+  width: 100%;
+  font-size: 18px;
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 10px 60px;
+  border-top: 1px solid #e67165;
+  text-align: center;
+  transition: background-color 0.3s, color 0.3s;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sidebar a::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.sidebar a:hover {
+  background-color: #fc5a48;
+}
+
+.sidebar a.active {
+  background-color: #c0392b;
+  color: #ecf0f1;
+}
+
+.sidebar .ripple {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.4);
+  display: block;
+  content: '';
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
