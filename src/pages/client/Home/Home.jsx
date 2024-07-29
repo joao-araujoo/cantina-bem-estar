@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./styles.module.css";
 import Cart from "../../../components/Cart/Cart";
 import UserModal from "../../../components/UserModal/UserModal";
+import ProductModal from "../../../components/ProductModal/ProductModal";
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +18,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const cartMenu = useRef(null);
   const hamburgerRef = useRef(null);
   const navigate = useNavigate();
@@ -32,12 +34,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Fetch products from API
     const fetchProducts = async () => {
       try {
         const response = await fetch("http://localhost:3000/produtos");
         const data = await response.json();
-        setProducts(data.data); // Ajuste feito aqui
+        setProducts(data.data);
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);
       }
@@ -69,6 +70,28 @@ export default function Home() {
     );
     setSearchResults(filteredResults.slice(0, 5));
   };
+
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProduct(null);
+  };
+
+  const handleSearchBarProductClick = (product) => {
+    setSelectedProduct(product); // Define o produto selecionado
+  };
+
+  // Agrupa produtos por categoria
+  const productsByCategory = products.reduce((acc, product) => {
+    const { categoria } = product;
+    if (!acc[categoria]) {
+      acc[categoria] = [];
+    }
+    acc[categoria].push(product);
+    return acc;
+  }, {});
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
@@ -164,7 +187,11 @@ export default function Home() {
             <div className={styles.searchBarItems}>
               {searchResults.length > 0 ? (
                 searchResults.map((result) => (
-                  <div key={result.id_produto} className={styles.searchBarProduct}>
+                  <div
+                    key={result.id_produto}
+                    className={styles.searchBarProduct}
+                    onClick={() => handleSearchBarProductClick(result)} // Abre o modal com o produto selecionado
+                  >
                     <div
                       style={{
                         display: "flex",
@@ -289,48 +316,47 @@ export default function Home() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            textAlign: "center",
           }}
         >
-          {Array.from(
-            products.reduce((acc, packedLunch) => {
-              const { categoria } = packedLunch;
-              if (!acc.has(categoria)) acc.set(categoria, []);
-              acc.get(categoria).push(packedLunch);
-              return acc;
-            }, new Map())
-          ).map(([categoria, marmitas]) => (
-            <>
-              <h2 style={{ marginTop: "20px" }}>{categoria}</h2>
+          {Object.keys(productsByCategory).map((category) => (
+            <div key={category}>
+              <h2 style={{ marginTop: "20px" }}>{category}</h2>
               <div
-                key={categoria}
                 style={{
                   display: "flex",
                   justifyContent: "center",
                   flexWrap: "wrap",
                   padding: "20px",
-                  gap: 30,
+                  gap: "30px",
                 }}
               >
-                {marmitas.map((marmita) => (
-                  // caso seja uma das marmitas mais vendidas, colocar uma classe para adicionar o simbolo ao topo
-                  <div className={styles.packedLunchCard} key={marmita.id_produto}>
+                {productsByCategory[category].map((product) => (
+                  <div
+                    className={styles.packedLunchCard}
+                    key={product.id_produto}
+                  >
                     <img
                       width={100}
                       height={100}
-                      src={marmita.caminho_imagem}
-                      alt={marmita.nome}
+                      src={product.caminho_imagem}
+                      alt={product.nome}
                     />
-                    <p>{marmita.nome}</p>
-                    <h3>{marmita.valor_produto}</h3>
-                    <button>
+                    <p>{product.nome}</p>
+                    <h3>{product.valor_produto}</h3>
+                    <button onClick={() => handleProductClick(product)}>
                       <FaCartShopping size={20} />
                     </button>
                   </div>
                 ))}
               </div>
-            </>
+            </div>
           ))}
         </div>
+
+        {selectedProduct && (
+          <ProductModal product={selectedProduct} onClose={handleCloseModal} />
+        )}
       </main>
 
       <Footer />

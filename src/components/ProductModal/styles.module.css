@@ -1,0 +1,314 @@
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.modalContent {
+    background: #fff;
+    border-radius: 8px;
+    padding: 0;
+    position: relative;
+    width: 80%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+}
+
+.modalHeader {
+    background-color: #e34534;
+    color: white;
+    padding: 5px 20px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.headerTitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    /* Espaço entre o ícone e o título */
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+}
+
+.modalBody {
+    display: flex;
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+    max-height: 70vh;
+    /* Ajuste a altura máxima do modal */
+}
+
+.imageContainer {
+    width: 40%;
+    padding-right: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.productImage {
+    width: 100%;
+    height: 250px;
+    /* Aumente a altura da imagem */
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.detailsContainer {
+    width: 60%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 250px;
+    /* Aumente a altura máxima dos detalhes */
+}
+
+.optionContainer {
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.optionContainer .labelContainer {
+    background-color: #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 5px 20px;
+}
+
+.optionContainer .labelContainer .label {
+    font-weight: bold;
+}
+
+.optionContainer .labelContainer .label .description {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+    font-weight: 400;
+}
+
+.optionContainer .labelContainer .required {
+    width: 100px;
+    height: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.optionContainer .options {
+    display: flex;
+    flex-direction: column;
+}
+
+.optionContainer .optionItem {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 20px 10px 20px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.optionContainer .optionItem .optionDetails {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.optionContainer .optionItem .optionName {
+    font-weight: normal;
+}
+
+.optionContainer .optionItem .optionPrice {
+    color: #666;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.optionContainer .optionItem input[type="radio"] {
+    appearance: none;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+    margin-left: 10px;
+}
+
+.optionContainer .optionItem input[type="radio"]:checked {
+    border-color: #e34534;
+    background-color: #e34534;
+}
+
+.commentSection {
+    margin-top: 20px;
+    position: relative;
+}
+
+.commentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.commentHeader label {
+    font-weight: bold;
+}
+
+.characterCount {
+    font-size: 14px;
+    color: #666;
+}
+
+.commentInput {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    resize: none;
+}
+
+.modalFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f7f7f7;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.footerContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.calories {
+    flex: 1;
+}
+
+.calories p {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: 600;
+}
+
+.productQuantity {
+    width: 100px;
+    margin-right: 10px;
+    border-radius: 10px;
+    min-width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.productQuantity button {
+    width: 33%;
+    color: #e34534;
+    border: none;
+    background: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.productQuantity span {
+    width: 33%;
+    font-size: 17px;
+    text-align: center;
+}
+
+.addButton {
+    background-color: #e34534;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 3px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .modalContent {
+        width: 95%;
+        max-width: none;
+        margin: 0;
+    }
+
+    .modalBody {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .imageContainer {
+        width: 100%;
+        padding-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .productImage {
+        height: 200px;
+    }
+
+    .detailsContainer {
+        width: 100%;
+        max-height: none;
+        /* Remove a altura máxima em telas menores */
+    }
+
+    .modalFooter {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .footerContent {
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .calories {
+        width: 50%;
+        text-align: left;
+    }
+
+    .productQuantity {
+        width: 50%;
+        text-align: right;
+    }
+
+    .addButton {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
