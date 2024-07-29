@@ -4,10 +4,9 @@ import Orders from "./pages/client/Orders";
 import Cart from "./pages/client/Cart";
 import Leaderboard from "./pages/client/Leaderboard";
 import SectionsTemplate from "./Templates/SectionsTemplate/SectionsTemplate";
-import DashboardTemplate from "./Templates/DashboardTemplate";
+import DashboardTemplate from "./Templates/DashboardTemplate/DashboardTemplate";
 import MainDashboard from "./pages/employee/MainDashboard";
 import DashboardOrders from "./pages/employee/DashboardOrders";
-import DashboardIngredients from "./pages/employee/DashboardIngredients";
 import DashboardProducts from "./pages/employee/DashboardProducts";
 import DashboardClients from "./pages/employee/DashboardClients";
 import DashboardEmployees from "./pages/employee/DashboardEmployees";
@@ -56,7 +55,7 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/dashboard", // TODO
+    path: "/dashboard",
     element: <DashboardTemplate />,
     children: [
       {
@@ -66,10 +65,6 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <DashboardOrders />,
-      },
-      {
-        path: "ingredients",
-        element: <DashboardIngredients />,
       },
       {
         path: "products",
