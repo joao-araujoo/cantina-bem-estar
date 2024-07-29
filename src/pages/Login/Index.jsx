@@ -1,7 +1,11 @@
 // src/pages/Login/Index.js
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery-mask-plugin';
+
 import { AiOutlineLoading } from "react-icons/ai";
 import styles from "./styles.module.css";
 import { useAuth } from "../../contexts/AuthContext";
