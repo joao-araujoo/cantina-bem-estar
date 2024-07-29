@@ -127,7 +127,7 @@ export default function DashboardFuncionarios() {
       <div style={{ backgroundColor: '#F5F5F9', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '5px' }}>
         <h1>Funcionários</h1>
         <div className="d-flex justify-content-end mb-3">
-          <button className="btn btn-primary" onClick={handleShowModal}>
+          <button className="btn btn-danger" onClick={handleShowModal}>
             Adicionar Novo Funcionário
           </button>
         </div>
@@ -214,7 +214,7 @@ export default function DashboardFuncionarios() {
                     onChange={handleChange}
                     required
                   >
-                    <option value="" selected disabled>Selecione uma permissão</option>
+                    <option value="" disabled>Selecione uma permissão</option>
                     <option value="1">Administrador</option>
                     <option value="2">Funcionário</option>
                   </select>
@@ -225,7 +225,7 @@ export default function DashboardFuncionarios() {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-danger"
                   style={{ marginTop: '20px' }}
                 >
                   Salvar

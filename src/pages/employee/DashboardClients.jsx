@@ -8,7 +8,8 @@ export default function DashboardClients() {
   const [formData, setFormData] = useState({ nome: '', email: '', senha: '', telefone: '', fotoPerfil: null });
   const [editMode, setEditMode] = useState(false);
   const [currentClientId, setCurrentClientId] = useState(null);
-  const [activeMenuId, setActiveMenuId] = useState(null); // Estado para controlar o menu de ações
+  const [activeMenuId, setActiveMenuId] = useState(null);
+  const [imageModal, setImageModal] = useState({ show: false, src: '' });
 
   const telefoneRef = useRef(null);
 
@@ -17,9 +18,8 @@ export default function DashboardClients() {
   }, []);
 
   useEffect(() => {
-    // Aplicar a máscara ao campo de telefone quando o modal estiver aberto
     if (showModal && telefoneRef.current) {
-      $(telefoneRef.current).mask('(00) 00000-0000'); // Exemplo de máscara para telefone
+      $(telefoneRef.current).mask('(00) 00000-0000');
     }
   }, [showModal]);
 
@@ -110,12 +110,20 @@ export default function DashboardClients() {
     setActiveMenuId(activeMenuId === id ? null : id);
   };
 
+  const handleImageClick = (src) => {
+    setImageModal({ show: true, src });
+  };
+
+  const handleImageModalClose = () => {
+    setImageModal({ show: false, src: '' });
+  };
+
   return (
     <div className="container mt-5">
       <div style={{ backgroundColor: '#F5F5F9', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '5px' }}>
         <h1>Clientes</h1>
         <div className="d-flex justify-content-end mb-3">
-          <button className="btn btn-primary" onClick={handleShowModal}>
+          <button className="btn btn-danger" onClick={handleShowModal}>
             Adicionar Novo Cliente
           </button>
         </div>
@@ -126,6 +134,7 @@ export default function DashboardClients() {
               <th>Nome</th>
               <th>Email</th>
               <th>Telefone</th>
+              <th>Foto de Perfil</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -136,6 +145,18 @@ export default function DashboardClients() {
                 <td>{client.nome}</td>
                 <td>{client.email}</td>
                 <td>{client.telefone}</td>
+                <td>
+                  {client.caminho_imagem ? (
+                    <img
+                      src={`http://localhost:3000/${client.caminho_imagem}`}
+                      alt={client.nome}
+                      style={{ width: '50px', height: '50px', cursor: 'pointer' }}
+                      onClick={() => handleImageClick(`http://localhost:3000/${client.caminho_imagem}`)}
+                    />
+                  ) : (
+                    'Sem Imagem'
+                  )}
+                </td>
                 <td>
                   <div className="dropdown">
                     <button className="btn btn-secondary dropdown-toggle" type="button" onClick={() => toggleMenu(client.id_cliente)}>
@@ -197,16 +218,42 @@ export default function DashboardClients() {
                 </div>
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-danger"
                   style={{ marginTop: '20px' }}
                 >
                   Salvar
                 </button>
-
               </form>
             </div>
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
+                Fechar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={`modal ${imageModal.show ? 'd-block' : 'd-none'}`} tabIndex="-1" role="dialog">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Imagem do Cliente</h5>
+              <button
+                type="button"
+                className="close"
+                style={{ marginLeft: 'auto' }}
+                aria-label="Close"
+                onClick={handleImageModalClose}
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="modal-body text-center">
+              <img src={imageModal.src} alt="Imagem do Cliente" className="img-fluid" />
+            </div>
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={handleImageModalClose}>
                 Fechar
               </button>
             </div>
