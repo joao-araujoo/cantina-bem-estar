@@ -78,6 +78,9 @@ export default function DashboardProdutos() {
       const url = URL.createObjectURL(file);
       setImagemFile(file);
       setImagemPreview(url);
+    } else {
+      setImagemFile(null);
+      setImagemPreview(null);
     }
   };
 
@@ -90,7 +93,7 @@ export default function DashboardProdutos() {
     const categoriaFinal = mostrarCampoNovaCategoria
       ? novaCategoria
       : formData.categoria;
-    
+
     // Verificar se todos os campos obrigatórios estão preenchidos
     if (
       !formData.nome ||
@@ -101,7 +104,7 @@ export default function DashboardProdutos() {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
-    
+
     const produtoData = {
       nome: formData.nome,
       calorias: formData.calorias,
@@ -109,7 +112,7 @@ export default function DashboardProdutos() {
       descricao: formData.descricao,
       valor_produto: formData.valor_produto,
     };
-  
+
     // Cria o FormData para enviar os dados e a imagem
     const formDataSubmit = new FormData();
     formDataSubmit.append("nome", produtoData.nome);
@@ -120,26 +123,25 @@ export default function DashboardProdutos() {
     if (imagemFile) {
       formDataSubmit.append("fotoProduto", imagemFile);
     }
-    
+
     try {
-      const response = await fetch(
-        editMode
-          ? `http://localhost:3000/produtos/${currentProdutoId}`
-          : "http://localhost:3000/produtos",
-        {
-          method: editMode ? "PUT" : "POST",
-          body: formDataSubmit,
-        }
-      );
-  
+      const url = editMode
+        ? `http://localhost:3000/produtos/${currentProdutoId}`
+        : "http://localhost:3000/produtos";
+        
+      const response = await fetch(url, {
+        method: editMode ? "PUT" : "POST",
+        body: formDataSubmit,
+      });
+
       if (!response.ok) {
         const errorMessage = await response.text(); // Tenta obter a mensagem de erro
         throw new Error(`Erro HTTP ${response.status}: ${errorMessage}`);
       }
-      
+
       // Se a resposta for bem-sucedida, assume-se que é JSON
       const data = await response.json();
-      
+
       if (data.status) {
         toast.success(editMode ? "Produto atualizado com sucesso!" : "Produto adicionado com sucesso!");
         setTimeout(() => {
@@ -154,7 +156,6 @@ export default function DashboardProdutos() {
       toast.error("Erro ao salvar produto. Tente novamente mais tarde.");
     }
   };
-  
 
   const handleEdit = (produto) => {
     setFormData({
@@ -165,10 +166,11 @@ export default function DashboardProdutos() {
       valor_produto: produto.valor_produto,
     });
     setImagemPreview(
-      `http://localhost:3000/${produto.caminho_imagem}`
+      produto.caminho_imagem ? `http://localhost:3000/${produto.caminho_imagem}` : null
     ); // Atualiza a pré-visualização
+    setImagemFile(null); // Limpa o arquivo de imagem para garantir que uma nova seleção seja tratada
     setEditMode(true);
-    setCurrentProdutoId(produto.id_produto);
+    setCurrentProdutoId(produto.id_produto); // Define a ID do produto atual
     handleShowModal();
   };
 
@@ -261,198 +263,204 @@ export default function DashboardProdutos() {
                       type="button"
                       onClick={() => toggleMenu(produto.id_produto)}
                     >
-                      ...
+                      Ações
                     </button>
-                    <div
+                    <ul
                       className={`dropdown-menu ${
                         activeMenuId === produto.id_produto ? "show" : ""
                       }`}
                     >
-                      <button
-                        className="dropdown-item"
-                        onClick={() => handleEdit(produto)}
-                      >
-                        Editar
-                      </button>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => handleDelete(produto.id_produto)}
-                      >
-                        Excluir
-                      </button>
-                    </div>
+                      <li>
+                        <button
+                          className="dropdown-item"
+                          onClick={() => handleEdit(produto)}
+                        >
+                          Editar
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="dropdown-item text-danger"
+                          onClick={() =>
+                            window.confirm(
+                              "Tem certeza de que deseja excluir este produto?"
+                            ) && handleDelete(produto.id_produto)
+                          }
+                        >
+                          Excluir
+                        </button>
+                      </li>
+                    </ul>
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      </div>
 
-        {/* Modal para adicionar/editar produto */}
-        {showModal && (
-          <div
-            className="modal fade show"
-            style={{ display: "block" }}
-            tabIndex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog modal-lg">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title" id="exampleModalLabel">
-                    {editMode ? "Editar Produto" : "Adicionar Novo Produto"}
-                  </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={handleCloseModal}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                      <label htmlFor="nome" className="form-label">
-                        Nome
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="nome"
-                        name="nome"
-                        value={formData.nome}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="calorias" className="form-label">
-                        Calorias
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="calorias"
-                        name="calorias"
-                        value={formData.calorias}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="categoria" className="form-label">
-                        Categoria
-                      </label>
-                      <select
-                        id="categoria"
-                        name="categoria"
-                        className="form-control"
-                        value={formData.categoria}
-                        onChange={handleChange}
-                      >
-                        <option value="">Selecione</option>
-                        <option value="Marmita">Marmita</option>
-                        <option value="Sobremesa">Sobremesa</option>
-                        <option value="Bebidas">Bebidas</option>
-                        <option value="Outra">Outra</option>
-                      </select>
-                      {mostrarCampoNovaCategoria && (
+      {showModal && (
+        <div
+          className="modal show"
+          tabIndex="-1"
+          style={{ display: "block" }}
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  {editMode ? "Editar Produto" : "Adicionar Produto"}
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCloseModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <form onSubmit={handleSubmit}>
+                  <div className="mb-3">
+                    <label htmlFor="nome" className="form-label">
+                      Nome
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="nome"
+                      name="nome"
+                      value={formData.nome}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="calorias" className="form-label">
+                      Calorias
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="calorias"
+                      name="calorias"
+                      value={formData.calorias}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="categoria" className="form-label">
+                      Categoria
+                    </label>
+                    <select
+                      className="form-select"
+                      id="categoria"
+                      name="categoria"
+                      value={formData.categoria}
+                      onChange={handleChange}
+                    >
+                      <option value="">Selecione uma categoria</option>
+                      <option value="Marmita">Marmita</option>
+                      <option value="Bebida">Bebida</option>
+                      <option value="Sobremesa">Sobremesa</option>
+                      <option value="Outra">Outra</option>
+                    </select>
+                    {mostrarCampoNovaCategoria && (
+                      <div className="mt-2">
                         <input
                           type="text"
-                          className="form-control mt-2"
-                          placeholder="Nova Categoria"
+                          className="form-control"
+                          placeholder="Nova categoria"
                           value={novaCategoria}
                           onChange={handleNovaCategoriaChange}
                         />
-                      )}
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="descricao" className="form-label">
-                        Descrição
-                      </label>
-                      <textarea
-                        className="form-control"
-                        id="descricao"
-                        name="descricao"
-                        rows="3"
-                        value={formData.descricao}
-                        onChange={handleChange}
-                      ></textarea>
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="valor_produto" className="form-label">
-                        Valor
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="valor_produto"
-                        name="valor_produto"
-                        value={formData.valor_produto}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <div className="mb-3">
-                      <label htmlFor="imagem" className="form-label">
-                        Imagem
-                      </label>
-                      <input
-                        type="file"
-                        className="form-control"
-                        id="imagem"
-                        name="imagem"
-                        accept="image/*"
-                        onChange={handleFotoProdutoChange}
-                      />
-                      {imagemPreview && (
+                      </div>
+                    )}
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="descricao" className="form-label">
+                      Descrição
+                    </label>
+                    <textarea
+                      className="form-control"
+                      id="descricao"
+                      name="descricao"
+                      rows="3"
+                      value={formData.descricao}
+                      onChange={handleChange}
+                    ></textarea>
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="valor_produto" className="form-label">
+                      Valor
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="valor_produto"
+                      name="valor_produto"
+                      value={formData.valor_produto}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="fotoProduto" className="form-label">
+                      Imagem
+                    </label>
+                    <input
+                      type="file"
+                      className="form-control"
+                      id="fotoProduto"
+                      onChange={handleFotoProdutoChange}
+                    />
+                    {imagemPreview && (
+                      <div className="mt-2">
                         <img
                           src={imagemPreview}
                           alt="Pré-visualização"
-                          style={{ width: "100px", marginTop: "10px" }}
+                          style={{ width: "100px", height: "auto" }}
                         />
-                      )}
-                    </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mb-3">
                     <button type="submit" className="btn btn-primary">
-                      {editMode ? "Salvar Alterações" : "Adicionar Produto"}
+                      {editMode ? "Atualizar Produto" : "Adicionar Produto"}
                     </button>
-                  </form>
-                </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Modal para exibir imagem */}
-        {showImagemModal && (
-          <div
-            className="modal fade show"
-            style={{ display: "block" }}
-            tabIndex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-          >
-            <div className="modal-dialog modal-lg">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">Imagem do Produto</h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={handleCloseImagemModal}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  {imagemModal && (
-                    <img
-                      src={imagemModal}
-                      alt="Imagem do Produto"
-                      style={{ width: "100%" }}
-                    />
-                  )}
-                </div>
+      {showImagemModal && (
+        <div
+          className="modal show"
+          tabIndex="-1"
+          style={{ display: "block" }}
+        >
+          <div className="modal-dialog modal-lg">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Imagem do Produto</h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCloseImagemModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                {imagemModal && (
+                  <img
+                    src={imagemModal}
+                    alt="Imagem do Produto"
+                    style={{ width: "100%", height: "auto" }}
+                  />
+                )}
               </div>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
