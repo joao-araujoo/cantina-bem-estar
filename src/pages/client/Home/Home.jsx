@@ -339,7 +339,7 @@ export default function Home() {
                     <img
                       width={100}
                       height={100}
-                      src={product.caminho_imagem}
+                      src={`http://localhost:3000/${product.caminho_imagem}`}
                       alt={product.nome}
                     />
                     <p>{product.nome}</p>

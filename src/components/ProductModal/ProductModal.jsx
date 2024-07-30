@@ -164,7 +164,7 @@ const ProductModal = ({ product, onClose }) => {
         <div className={styles.modalBody}>
           <div className={styles.imageContainer}>
             <img
-              src="/products-images/marmita-combo.jpg" // TODO colocar {product.caminho_imagem} depois...
+              src={`http://localhost:3000/${product.caminho_imagem}`} // TODO colocar {product.caminho_imagem} depois...
               alt={product.nome}
               className={styles.productImage}
             />

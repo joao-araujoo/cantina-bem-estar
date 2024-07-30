@@ -34,7 +34,7 @@ const Sidebar = () => {
           onClick={handleLinkClick}
         >
           <GoHomeFill size={25} />
-          Dashboard
+          Home
         </NavLink>
         <NavLink
           to="/dashboard/orders"
@@ -67,7 +67,7 @@ const Sidebar = () => {
           style={{ borderBottom: "1px solid #e67165" }}
         >
           <GiCook size={25} />
-          Funcionário
+          Funcionários
         </NavLink>
       </div>
     </>
