@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 export default function DashboardProdutos() {
   const [produtos, setProdutos] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ nome: '', calorias: '', categoria: '', descricao: '', valor_produto: '' });
+  const [formData, setFormData] = useState({ nome: '', calorias: '', categoria: '', descricao: '', valor_produto: '', caminho_imagem: null });
   const [editMode, setEditMode] = useState(false);
   const [currentProdutoId, setCurrentProdutoId] = useState(null);
   const [activeMenuId, setActiveMenuId] = useState(null);
@@ -11,7 +11,6 @@ export default function DashboardProdutos() {
   const [mostrarCampoNovaCategoria, setMostrarCampoNovaCategoria] = useState(false);
   const [imagemModal, setImagemModal] = useState(null);
   const [showImagemModal, setShowImagemModal] = useState(false);
-  const [imagem, setImagem] = useState(null);
 
   useEffect(() => {
     fetchProdutos();
@@ -34,29 +33,24 @@ export default function DashboardProdutos() {
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => {
     setShowModal(false);
-    setFormData({ nome: '', calorias: '', categoria: '', descricao: '', valor_produto: '' });
+    setFormData({ nome: '', calorias: '', categoria: '', descricao: '', valor_produto: '', caminho_imagem: null });
     setNovaCategoria('');
     setMostrarCampoNovaCategoria(false);
     setEditMode(false);
     setCurrentProdutoId(null);
-    setImagem(null);
   };
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'caminho_imagem') {
-      setImagem(files ? files[0] : null);
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-      if (name === 'categoria' && value === 'Outra') {
-        setMostrarCampoNovaCategoria(true);
-      } else if (name === 'categoria') {
-        setMostrarCampoNovaCategoria(false);
-        setNovaCategoria('');
-      }
+    setFormData({
+      ...formData,
+      [name]: files ? files[0] : value,
+    });
+    if (name === 'categoria' && value === 'Outra') {
+      setMostrarCampoNovaCategoria(true);
+    } else if (name === 'categoria') {
+      setMostrarCampoNovaCategoria(false);
+      setNovaCategoria('');
     }
   };
 
@@ -76,31 +70,19 @@ export default function DashboardProdutos() {
     }
 
     try {
-      // Primeiro, envie os dados do produto
-      const produtoResponse = await fetch(editMode ? `http://localhost:3000/produtos/${currentProdutoId}` : 'http://localhost:3000/produtos', {
+      const response = await fetch(editMode ? `http://localhost:3000/produtos/${currentProdutoId}` : 'http://localhost:3000/produtos', {
         method: editMode ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ ...formData, categoria: categoriaFinal }),
       });
-      const produtoData = await produtoResponse.json();
-      
-      if (produtoData.status) {
-        // Se o produto for salvo com sucesso, envie a imagem, se houver
-        if (imagem) {
-          const formDataImagem = new FormData();
-          formDataImagem.append('imagem', imagem);
-          
-          await fetch(`http://localhost:3000/produtos/${produtoData.data.id_produto}/imagem`, {
-            method: 'POST',
-            body: formDataImagem,
-          });
-        }
+      const data = await response.json();
+      if (data.status) {
         fetchProdutos();
         handleCloseModal();
       } else {
-        alert(produtoData.msg);
+        alert(data.msg);
       }
     } catch (error) {
       console.error('Erro ao salvar produto:', error);
@@ -114,6 +96,7 @@ export default function DashboardProdutos() {
       categoria: produto.categoria,
       descricao: produto.descricao,
       valor_produto: produto.valor_produto,
+      caminho_imagem: null,
     });
     setEditMode(true);
     setCurrentProdutoId(produto.id_produto);

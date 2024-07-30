@@ -42,7 +42,7 @@ const Sidebar = () => {
           onClick={handleLinkClick}
         >
           <MdBorderColor size={25} />
-          Orders
+          Pedidos
         </NavLink>
         <NavLink
           to="/dashboard/products"
@@ -50,7 +50,7 @@ const Sidebar = () => {
           onClick={handleLinkClick}
         >
           <MdDinnerDining size={25} />
-          Products
+          Produtos
         </NavLink>
         <NavLink
           to="/dashboard/clients"
@@ -58,7 +58,7 @@ const Sidebar = () => {
           onClick={handleLinkClick}
         >
           <MdPerson size={25} />
-          Clients
+          Clientes
         </NavLink>
         <NavLink
           to="/dashboard/employees"
@@ -67,7 +67,7 @@ const Sidebar = () => {
           style={{ borderBottom: "1px solid #e67165" }}
         >
           <GiCook size={25} />
-          Employees
+          Funcionário
         </NavLink>
       </div>
     </>
