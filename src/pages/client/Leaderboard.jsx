@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
 import styles from "./leaderboard.module.css";
 import { useAuth } from "../../contexts/AuthContext";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 export default function Leaderboard() {
   const [clientes, setClientes] = useState([]);
   const { user } = useAuth();
+
+  useAuthCheck({ isEmployeeOnly: false });
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -40,7 +43,7 @@ export default function Leaderboard() {
     <>
       <SectionsContentHeader title="Placar de Líderes" />
       <div className={styles.tableContainer}>
-        <table className={styles.table}>
+        <table className={styles.leaderboardTable}>
           <thead>
             <tr>
               <th>Ranking</th>

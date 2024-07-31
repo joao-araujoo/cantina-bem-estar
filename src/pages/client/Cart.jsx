@@ -1,8 +1,11 @@
 import CartCheckoutContainer from "../../components/CartCheckoutContainer/CartCheckoutContainer";
 import CartProductsContainer from "../../components/CartProductsContainer/CartProductsContainer";
 import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 export default function Cart() {
+  useAuthCheck({ isEmployeeOnly: false });
+
   return (
     <>
       <SectionsContentHeader title="Finalize sua Compra!" />

@@ -34,7 +34,7 @@ export default function Login() {
         const data = await response.json();
         if (data.status) {
           // Usa a função de login do AuthContext
-          login(data.data, data.token);
+          login(data.data, data.token, data.userType);
 
           toast.success("Login bem-sucedido!");
           setTimeout(() => {

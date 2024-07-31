@@ -11,10 +11,13 @@ import styles from "./styles.module.css";
 import Cart from "../../../components/Cart/Cart";
 import UserModal from "../../../components/UserModal/UserModal";
 import ProductModal from "../../../components/ProductModal/ProductModal";
+import { useAuth } from "../../../contexts/AuthContext";
+import useAuthCheck from "../../../hooks/useAuthCheck";
 
 export default function Home() {
+  const { user, setUser } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -23,15 +26,7 @@ export default function Home() {
   const hamburgerRef = useRef(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // Verifica se o usuário está autenticado
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
-  }, []);
+  useAuthCheck({ isEmployeeOnly: false });
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -55,7 +50,7 @@ export default function Home() {
   };
 
   const handleUserButtonClick = () => {
-    if (isLoggedIn) {
+    if (user) {
       setIsModalOpen(!isModalOpen);
     } else {
       navigate("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
@@ -201,13 +196,21 @@ export default function Home() {
                       }}
                     >
                       <img
-                        src={result.caminho_imagem}
+                        src={`http://localhost:3000/${result.caminho_imagem}`}
                         alt={result.nome}
                         style={{ height: "30px", width: "30px" }}
                       />
                       <p>{result.nome}</p>
                     </div>
-                    <h4>{result.valor_produto}</h4>
+                    <h4>
+                      {parseFloat(result.valor_produto).toLocaleString(
+                        "pt-BR",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        }
+                      )}
+                    </h4>
                   </div>
                 ))
               ) : (
@@ -227,7 +230,7 @@ export default function Home() {
             <HiOutlineShoppingBag />
           </button>
           <button className="user-button" onClick={handleUserButtonClick}>
-            {isLoggedIn ? <HiMiniUser /> : <FiLogIn />}
+            {user ? <HiMiniUser /> : <FiLogIn />}
           </button>
         </div>
       </header>
@@ -343,7 +346,15 @@ export default function Home() {
                       alt={product.nome}
                     />
                     <p>{product.nome}</p>
-                    <h3>{product.valor_produto}</h3>
+                    <h3>
+                      {parseFloat(product.valor_produto).toLocaleString(
+                        "pt-BR",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        }
+                      )}
+                    </h3>
                     <button onClick={() => handleProductClick(product)}>
                       <FaCartShopping size={20} />
                     </button>

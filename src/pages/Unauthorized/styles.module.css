@@ -1,0 +1,52 @@
+.header {
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+}
+
+.main {
+    padding: 20px 5%;
+    margin: 0 auto;
+}
+
+.notAuthorizedContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+}
+
+
+.notAuthorizedContainer h1 {
+    color: #721c24;
+    margin-bottom: 20px;
+}
+
+.notAuthorizedContainer p {
+    margin-bottom: 20px;
+}
+
+.redirectButton {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #e34534;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 200ms ease-in-out;
+}
+
+.redirectButton:hover {
+    background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+    .notAuthorizedContainer {
+        padding: 10px;
+    }
+}

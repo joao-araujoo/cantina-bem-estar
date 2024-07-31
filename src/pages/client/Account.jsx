@@ -4,11 +4,14 @@ import ProfileInfo from "../../components/UserAccount/ProfileInfo/ProfileInfo";
 import { HiPencil } from "react-icons/hi";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 export default function Account() {
   const { user, setUser } = useAuth();
   const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
+
+  useAuthCheck({ isEmployeeOnly: false });
 
   const handleSave = async (editedInfo) => {
     const dataToSend = {

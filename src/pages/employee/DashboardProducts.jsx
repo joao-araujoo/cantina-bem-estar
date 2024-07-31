@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 export default function DashboardProdutos() {
   const [produtos, setProdutos] = useState([]);
@@ -21,6 +22,8 @@ export default function DashboardProdutos() {
   const [imagemFile, setImagemFile] = useState(null); // Estado para o arquivo da imagem
   const [showImagemModal, setShowImagemModal] = useState(false);
   const [imagemModal, setImagemModal] = useState(null);
+
+  useAuthCheck({ isEmployeeOnly: true });
 
   useEffect(() => {
     fetchProdutos();
@@ -128,7 +131,7 @@ export default function DashboardProdutos() {
       const url = editMode
         ? `http://localhost:3000/produtos/${currentProdutoId}`
         : "http://localhost:3000/produtos";
-        
+
       const response = await fetch(url, {
         method: editMode ? "PUT" : "POST",
         body: formDataSubmit,
@@ -143,7 +146,11 @@ export default function DashboardProdutos() {
       const data = await response.json();
 
       if (data.status) {
-        toast.success(editMode ? "Produto atualizado com sucesso!" : "Produto adicionado com sucesso!");
+        toast.success(
+          editMode
+            ? "Produto atualizado com sucesso!"
+            : "Produto adicionado com sucesso!"
+        );
         setTimeout(() => {
           fetchProdutos(); // Atualiza a lista de produtos
           handleCloseModal();
@@ -166,7 +173,9 @@ export default function DashboardProdutos() {
       valor_produto: produto.valor_produto,
     });
     setImagemPreview(
-      produto.caminho_imagem ? `http://localhost:3000/${produto.caminho_imagem}` : null
+      produto.caminho_imagem
+        ? `http://localhost:3000/${produto.caminho_imagem}`
+        : null
     ); // Atualiza a pré-visualização
     setImagemFile(null); // Limpa o arquivo de imagem para garantir que uma nova seleção seja tratada
     setEditMode(true);
@@ -300,11 +309,7 @@ export default function DashboardProdutos() {
       </div>
 
       {showModal && (
-        <div
-          className="modal show"
-          tabIndex="-1"
-          style={{ display: "block" }}
-        >
+        <div className="modal show" tabIndex="-1" style={{ display: "block" }}>
           <div className="modal-dialog">
             <div className="modal-content">
               <div className="modal-header">
@@ -357,9 +362,9 @@ export default function DashboardProdutos() {
                       onChange={handleChange}
                     >
                       <option value="">Selecione uma categoria</option>
-                      <option value="Marmita">Marmita</option>
-                      <option value="Bebida">Bebida</option>
-                      <option value="Sobremesa">Sobremesa</option>
+                      <option value="Marmitas">Marmitas</option>
+                      <option value="Bebidas">Bebidas</option>
+                      <option value="Sobremesas">Sobremesas</option>
                       <option value="Outra">Outra</option>
                     </select>
                     {mostrarCampoNovaCategoria && (
@@ -433,11 +438,7 @@ export default function DashboardProdutos() {
       )}
 
       {showImagemModal && (
-        <div
-          className="modal show"
-          tabIndex="-1"
-          style={{ display: "block" }}
-        >
+        <div className="modal show" tabIndex="-1" style={{ display: "block" }}>
           <div className="modal-dialog modal-lg">
             <div className="modal-content">
               <div className="modal-header">

@@ -14,6 +14,7 @@ import Login from "./pages/Login/Index";
 import Register from "./pages/client/Register";
 import Account from "./pages/client/Account";
 import Help from "./pages/client/Help";
+import Unauthorized from "./pages/Unauthorized/Unauthorized";
 
 const router = createBrowserRouter([
   {
@@ -80,6 +81,10 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/unauthorized",
+    element: <Unauthorized />,
+  }
 ]);
 
 export default router;

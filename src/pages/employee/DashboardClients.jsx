@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import $ from 'jquery';
+import useAuthCheck from '../../hooks/useAuthCheck';
 
 export default function DashboardClients() {
   const [clients, setClients] = useState([]);
@@ -11,6 +12,8 @@ export default function DashboardClients() {
   const [imageModal, setImageModal] = useState({ show: false, src: '' });
 
   const telefoneRef = useRef(null);
+
+  useAuthCheck({ isEmployeeOnly: true, isAdminOnly: true });
 
   useEffect(() => {
     fetchClients();

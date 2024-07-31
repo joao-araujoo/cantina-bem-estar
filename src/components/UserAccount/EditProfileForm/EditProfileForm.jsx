@@ -9,7 +9,6 @@ export default function EditProfileForm({ user, onSave }) {
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // Mantém o campo para a foto, mas sem funcionalidade de upload
   const [profilePicture, setProfilePicture] = useState(user.caminho_imagem);
 
   const handleSubmit = (e) => {

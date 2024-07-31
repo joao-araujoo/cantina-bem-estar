@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaClipboardList, FaClock, FaCheckCircle, FaTruck, FaUsers } from 'react-icons/fa';
+import useAuthCheck from '../../hooks/useAuthCheck';
 
 export default function MainDashboard() {
   const [counts, setCounts] = useState({
@@ -13,6 +14,8 @@ export default function MainDashboard() {
   });
 
   const navigate = useNavigate();
+
+  useAuthCheck({ isEmployeeOnly: true });
 
   useEffect(() => {
     const fetchCounts = async () => {

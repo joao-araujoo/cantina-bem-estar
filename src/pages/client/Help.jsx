@@ -2,6 +2,7 @@ import SectionsContentHeader from "../../components/SectionsContentHeader/Sectio
 import { Container, Typography, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import styled from '@emotion/styled';
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 const faqItems = [
   {
@@ -60,6 +61,8 @@ const Section = styled.section`
 `;
 
 const Help = () => {
+  useAuthCheck({ isEmployeeOnly: false });
+
   return (
     <>
       <SectionsContentHeader title="Ajuda" />

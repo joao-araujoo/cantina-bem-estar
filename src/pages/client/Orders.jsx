@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import OrderCard from "../../components/OrderCard/OrderCard";
 import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 export default function Orders() {
   const [filter, setFilter] = useState("Todos");
   const [orders, setOrders] = useState([]);
+
+  useAuthCheck({ isEmployeeOnly: false });
 
   useEffect(() => {
     const fetchOrders = async () => {

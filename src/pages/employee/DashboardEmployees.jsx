@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import $ from 'jquery';
+import useAuthCheck from '../../hooks/useAuthCheck';
 
 export default function DashboardFuncionarios() {
   const [funcionarios, setFuncionarios] = useState([]);
@@ -10,6 +11,8 @@ export default function DashboardFuncionarios() {
   const [activeMenuId, setActiveMenuId] = useState(null); // Estado para controlar o menu de ações
 
   const telefoneRef = useRef(null);
+
+  useAuthCheck({ isEmployeeOnly: true, isAdminOnly: true });
 
   useEffect(() => {
     fetchFuncionarios();

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import $ from 'jquery';
+import useAuthCheck from '../../hooks/useAuthCheck';
 
 export default function DashboardPedidos() {
   const [pedidos, setPedidos] = useState([]);
@@ -7,6 +8,8 @@ export default function DashboardPedidos() {
   const [selectedPedido, setSelectedPedido] = useState(null);
   const [status, setStatus] = useState(1); // Default status to "Pendente"
   const [activeMenuId, setActiveMenuId] = useState(null);
+
+  useAuthCheck({ isEmployeeOnly: true });
 
   useEffect(() => {
     fetchPedidos();

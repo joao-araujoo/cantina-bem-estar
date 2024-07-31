@@ -6,9 +6,11 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  const login = (userInfo, token) => {
-    setUser(userInfo);
-    localStorage.setItem("user", JSON.stringify(userInfo));
+  const login = (userInfo, token, userType) => {
+    const userWithUserType = { ...userInfo, userType };
+    setUser(userWithUserType);
+    console.log(userWithUserType);
+    localStorage.setItem("user", JSON.stringify(userWithUserType));
     localStorage.setItem("token", token);
   };
 

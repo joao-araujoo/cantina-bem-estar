@@ -33,7 +33,7 @@ const ProductModal = ({ product, onClose }) => {
 
   const renderCategorySpecificContent = () => {
     const category = product.categoria.toLowerCase();
-  
+
     switch (category) {
       case "marmitas":
         return (
@@ -49,19 +49,19 @@ const ProductModal = ({ product, onClose }) => {
               <div className={styles.optionItem}>
                 <div className={styles.optionDetails}>
                   <div className={styles.optionName}>Mini</div>
-                  <div className={styles.optionPrice}>R$ 17</div>
+                  <div className={styles.optionPrice}>+ R$ 0,00</div>
                 </div>
                 <input type="radio" name="tamanho" value="mini" />
               </div>
               <div className={styles.optionItem}>
                 <div className={styles.optionDetails}>
                   <div className={styles.optionName}>Normal</div>
-                  <div className={styles.optionPrice}>R$ 19</div>
+                  <div className={styles.optionPrice}>+ R$ 2,00</div>
                 </div>
                 <input type="radio" name="tamanho" value="normal" />
               </div>
             </div>
-  
+
             <div className={styles.labelContainer}>
               <div className={styles.label}>
                 Acompanha Salada
@@ -85,7 +85,7 @@ const ProductModal = ({ product, onClose }) => {
             </div>
           </div>
         );
-  
+
       case "bebidas":
         return (
           <div className={styles.optionContainer}>
@@ -142,12 +142,11 @@ const ProductModal = ({ product, onClose }) => {
             </div>
           </div>
         );
-  
+
       default:
         return null;
     }
   };
-  
 
   return (
     <div className={styles.modalOverlay} key={product.id_produto}>
@@ -213,7 +212,11 @@ const ProductModal = ({ product, onClose }) => {
               /* Adicione a funcionalidade de adicionar ao carrinho aqui */
             }}
           >
-            Adicionar {product.valor_produto}
+            Adicionar{" "}
+            {parseFloat(product.valor_produto).toLocaleString("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            })}
           </button>
         </div>
       </div>
