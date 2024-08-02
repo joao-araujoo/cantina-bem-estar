@@ -5,8 +5,11 @@ import { BsFire } from "react-icons/bs";
 import { ImSpoonKnife } from "react-icons/im";
 import { RiDrinks2Fill } from "react-icons/ri";
 import { LuDessert } from "react-icons/lu";
+import { useCart } from "../../contexts/CartContext";
+import { toast } from "react-toastify";
 
 const ProductModal = ({ product, onClose }) => {
+  const { addToCart } = useCart();
   const [comment, setComment] = useState("");
   const [quantity, setQuantity] = useState(1);
 
@@ -148,6 +151,36 @@ const ProductModal = ({ product, onClose }) => {
     }
   };
 
+  const handleAddToCart = () => {
+    addToCart(product, quantity, comment);
+
+    const itemCount = quantity > 1 ? `${quantity}x` : `1x`;
+    const itemText =
+      quantity > 1
+        ? `"${product.nome}" foram adicionados ao carrinho com sucesso!`
+        : `"${product.nome}" foi adicionado ao carrinho com sucesso!`;
+
+    toast.success(`(${itemCount}) ${itemText}`, {
+      position: "top-center", // Alterado para topo centralizado
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
+    onClose();
+  };
+
+  const totalPrice = (product.valor_produto * quantity).toLocaleString(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL",
+    }
+  );
+
   return (
     <div className={styles.modalOverlay} key={product.id_produto}>
       <div className={styles.modalContent}>
@@ -163,7 +196,7 @@ const ProductModal = ({ product, onClose }) => {
         <div className={styles.modalBody}>
           <div className={styles.imageContainer}>
             <img
-              src={`http://localhost:3000/${product.caminho_imagem}`} // TODO colocar {product.caminho_imagem} depois...
+              src={`http://localhost:3000/${product.caminho_imagem}`}
               alt={product.nome}
               className={styles.productImage}
             />
@@ -208,15 +241,9 @@ const ProductModal = ({ product, onClose }) => {
           </div>
           <button
             className={styles.addButton}
-            onClick={() => {
-              /* Adicione a funcionalidade de adicionar ao carrinho aqui */
-            }}
+            onClick={() => handleAddToCart()}
           >
-            Adicionar{" "}
-            {parseFloat(product.valor_produto).toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
+            Adicionar {totalPrice}
           </button>
         </div>
       </div>

@@ -1,40 +1,44 @@
 /* eslint-disable react/prop-types */
+import { useCart } from "../../../contexts/CartContext";
 import "./styles.css";
 
-export default function CartItem({ productObject }) {
+export default function CartItem({ product }) {
+  const { removeFromCart, updateQuantity } = useCart();
 
   return (
     <div className="cart-item">
-      <input
-        type="checkbox"
-        name="checkItem"
-        id={productObject.id}
-      />
       <div className="cart-item__characteristics">
         <div className="cart-item__image">
-          <img src={productObject.image_path} alt={productObject.name} />
+          <img src={`http://localhost:3000/${product.caminho_imagem}`} alt={product.nome} />
         </div>
         <div className="cart-item__specifications">
           <div>
-              <h3>{productObject.name}</h3>
-            <p>
-              {productObject.category}
-            </p>
+            <h3>{product.nome}</h3>
+            <p>{product.categoria}</p>
           </div>
           <div className="cart-item__options">
-            <h2>
-              {productObject.price}
-            </h2>
+            <h2>{parseFloat(product.valor_produto).toLocaleString(
+                        "pt-BR",
+                        {
+                          style: "currency",
+                          currency: "BRL",
+                        }
+                      )}</h2>
             <div className="product-quantity">
-              <button >-</button>
-              <span>1</span>
-              <button >+</button>
+              <button onClick={() => updateQuantity(product.id_produto, -1)}>
+                -
+              </button>
+              <span>{product.quantity}</span>
+              <button onClick={() => updateQuantity(product.id_produto, 1)}>
+                +
+              </button>
             </div>
           </div>
         </div>
       </div>
       <button
         className="removeFromCart-button"
+        onClick={() => removeFromCart(product.id_produto)}
       >
         ✖
       </button>

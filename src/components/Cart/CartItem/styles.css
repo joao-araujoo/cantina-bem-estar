@@ -82,12 +82,12 @@
   justify-content: space-between;
 }
 
-.cart-item .cart-item__characteristics .cart-item__specifications .cart-item__options h2 {
+/* .cart-item .cart-item__characteristics .cart-item__specifications .cart-item__options h2 {
   background-color: #e34534;
   -webkit-background-clip: text;
   color: transparent;
   font-size: 15px;
-}
+} */
 
 .cart-item .cart-item__characteristics .cart-item__specifications .cart-item__options .product-quantity {
   margin-right: 5px;

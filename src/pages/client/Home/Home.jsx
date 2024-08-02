@@ -15,7 +15,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import useAuthCheck from "../../../hooks/useAuthCheck";
 
 export default function Home() {
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [products, setProducts] = useState([]);

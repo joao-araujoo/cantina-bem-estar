@@ -1,16 +1,33 @@
+import { Link } from "react-router-dom";
+import { useCart } from "../../../contexts/CartContext";
 import "./styles.css";
 
-export default function CheckoutContainer({ cart }) {
+export default function CheckoutContainer() {
+  const { calculateSubtotal, cart } = useCart();
+  const subtotal = calculateSubtotal();
+  const totalItems = cart.reduce(
+    (total, product) => total + product.quantity,
+    0
+  );
+
   return (
     <div className="checkout-container">
       <div>
         <p>
-          Total: <span>1 item</span>
+          Total:{" "}
+          <span>
+            {totalItems} {totalItems === 1 ? "item" : "itens"}
+          </span>
         </p>
-        <h2>R$ 10,00</h2>
+        <h2>R$ {subtotal.toFixed(2)}</h2>
       </div>
       <div>
-        <button>Finalizar compra</button>
+        <Link
+          to="/sections/cart"
+          style={{ textDecoration: "none", color: "#333" }}
+        >
+          <button>Finalizar compra</button>
+        </Link>
       </div>
     </div>
   );

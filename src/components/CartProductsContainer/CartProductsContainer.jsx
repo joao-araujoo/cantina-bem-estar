@@ -1,74 +1,85 @@
+import { Link } from "react-router-dom";
+import { useCart } from "../../contexts/CartContext";
+import { toast } from "react-toastify"; // Importar toast
 import styles from "./styles.module.css";
 
 export default function CartProductsContainer() {
-  const products = [
-    {
-      id: 1,
-      name: "Filé de Frango à Parmegiana",
-      price: 19,
-      calories: 350,
-      category: "Tradicional",
-      description: "Acompanha arroz, feijão, fritas e salada",
-      image_path: "/products-images/marmita-combo.jpg",
-    },
-    {
-      id: 2,
-      name: "Salmão Grelhado",
-      price: 19,
-      calories: 400,
-      category: "Fitness",
-      description: "Acompanha quinoa, legumes e salada verde",
-      image_path: "/products-images/marmita-quinoa.webp",
-    },
-    {
-      id: 3,
-      name: "Vegana de Lentilhas",
-      price: 19,
-      calories: 300,
-      category: "Vegana",
-      description: "Acompanha arroz integral, legumes e tofu",
-      image_path: "/products-images/marmita-fitness.jpg",
-    },
-    {
-      id: 4,
-      name: "Coca-Cola",
-      price: 5,
-      calories: 140,
-      category: "Bebidas",
-      description: "Coca-Cola em lata",
-      image_path: "/products-images/coca-cola.webp",
-    },
-    {
-      id: 5,
-      name: "Açaí",
-      price: 10,
-      calories: 330,
-      category: "Sobremesas",
-      description: "",
-      image_path: "/products-images/acai.jpg",
-    },
-  ];
+  const { cart, updateQuantity, removeFromCart } = useCart();
+
+  const handleRemoveFromCart = (productId) => {
+    const removedProduct = cart.find((item) => item.id_produto === productId);
+    toast.success(`${removedProduct.nome} foi removido do carrinho com sucesso!`, {
+      position: "top-center", // Alterado para topo centralizado
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    removeFromCart(productId);
+  };
 
   return (
     <div className={styles.productsContainer}>
-      {products.map((product) => (
-        <div key={product.id} className={styles.productCard}>
-          <div className={styles.productImage}>
-            <img src={product.image_path} alt={product.name} />
+      {cart.length === 0 ? (
+        <p className={styles.emptyMessage}>
+          Seu carrinho está vazio =(
+          <br />
+          <Link
+            to="/"
+            style={{
+              textDecoration: "none",
+              color: "#e34534",
+              fontWeight: "600",
+            }}
+          >
+            Dê uma olhada em nossos deliciosos produtos!
+          </Link>
+        </p>
+      ) : (
+        cart.map((product) => (
+          <div key={product.id_produto} className={styles.productCard}>
+            <button
+              className={styles.removeButton}
+              onClick={() => handleRemoveFromCart(product.id_produto)}
+              title="Remover do carrinho"
+            >
+              ✖
+            </button>
+            <div className={styles.productImage}>
+              <img
+                src={`http://localhost:3000/${product.caminho_imagem}`}
+                alt={product.nome}
+              />
+            </div>
+            <div className={styles.productData}>
+              <h3>{product.nome}</h3>
+              <p>
+                <div className={styles.productQuantity}>
+                  <button
+                    onClick={() => updateQuantity(product.id_produto, -1)}
+                  >
+                    -
+                  </button>
+                  <span>{product.quantity}</span>
+                  <button onClick={() => updateQuantity(product.id_produto, 1)}>
+                    +
+                  </button>
+                </div>
+                <strong>
+                  {parseFloat(
+                    product.valor_produto * product.quantity
+                  ).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </strong>
+              </p>
+            </div>
           </div>
-          <div className={styles.productData}>
-            <h3>{product.name}</h3>
-            <p>
-              <div className={styles.productQuantity}>
-                <button>-</button>
-                <span>1</span>
-                <button>+</button>
-              </div>
-              <strong>R$ {product.price.toFixed(2)}</strong>
-            </p>
-          </div>
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 }
