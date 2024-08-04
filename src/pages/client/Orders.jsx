@@ -30,7 +30,8 @@ export default function Orders() {
 
   const filteredOrders = orders.filter((order) => {
     if (filter === "Todos") return true;
-    if (filter === "Pendente") return order.status === 1 || order.status === 2 || order.status === 3;
+    if (filter === "Pendente")
+      return order.status === 1 || order.status === 2 || order.status === 3;
     if (filter === "Entregue") return order.status === 4;
     return false;
   });
@@ -92,11 +93,18 @@ export default function Orders() {
         ))
       ) : (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
-          <img src="/no-orders.svg" alt="No orders" width="280px"/>
+          <img src="/no-orders.svg" alt="No orders" width="280px" />
           <h2>Ainda não há pedidos!</h2>
           <p>
             Não sabe o que escolher?{" "}
-            <Link to="/" style={{ color: "#E34534", textDecoration: "none", fontWeight: "600" }}>
+            <Link
+              to="/"
+              style={{
+                color: "#E34534",
+                textDecoration: "none",
+                fontWeight: "600",
+              }}
+            >
               Conheça nossas queridinhas da casa!
             </Link>
           </p>

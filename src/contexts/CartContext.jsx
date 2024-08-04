@@ -48,6 +48,10 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    setCart([]);
+  };
+
   const calculateSubtotal = () => {
     return cart.reduce(
       (total, product) => total + product.valor_produto * product.quantity,
@@ -62,6 +66,7 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         updateQuantity,
+        clearCart,
         calculateSubtotal,
       }}
     >

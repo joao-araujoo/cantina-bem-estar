@@ -6,6 +6,7 @@ OrderCard.propTypes = {
 };
 
 export default function OrderCard({ orderData }) {
+  // Função para formatar o preço
   const formatPrice = (price) => {
     const priceNumber = Number(price);
     if (isNaN(priceNumber)) {
@@ -17,15 +18,25 @@ export default function OrderCard({ orderData }) {
     });
   };
 
+  // Função para formatar o horário de retirada usando regex
+  const formatPickupTime = (datetime) => {
+    if (!datetime) return "Não especificado";
+
+    // Regex para extrair a hora e o minuto no formato HH:MM
+    const match = datetime.match(/\d{2}:\d{2}/);
+    return match ? match[0] : "Hora inválida";
+  };
+
+  // Função para obter o estilo do status
   const getStatusStyle = (status) => {
     switch (status) {
-      case 1: // Assuming 1 represents "Pendente"
+      case 1: // Pendente
         return styles.pending;
-      case 2: // Assuming 2 represents "Em andamento"
+      case 2: // Em andamento
         return styles.proccess;
-      case 3: // Assuming 3 represents "Finished"
+      case 3: // Finalizado
         return styles.finished;
-      case 4: // Assuming 4 represents "Entregue"
+      case 4: // Entregue
         return styles.delivered;
       default:
         return;
@@ -36,7 +47,8 @@ export default function OrderCard({ orderData }) {
     <div className={styles.wrapper} key={orderData.id_pedido}>
       <p style={{ fontStyle: "italic" }}>#{orderData.id_pedido}</p>
       <p>
-        Horário de retirada: <span>{orderData.horario_retirada || "Não especificado"}</span>
+        Horário de retirada:{" "}
+        <span>{formatPickupTime(orderData.horario_retirada)}</span>
       </p>
       <p>
         Produtos: <span>{orderData.descricao}</span>
@@ -48,11 +60,17 @@ export default function OrderCard({ orderData }) {
         Preço total: <span>{formatPrice(orderData.valor_total)}</span>
       </p>
       <p>
-        Status: <span className={getStatusStyle(orderData.status)}>
-          {orderData.status === 1 ? "Pendente" :
-            orderData.status === 2 ? "Em andamento" :
-              orderData.status === 3 ? "Finalizado" :
-                orderData.status === 4 ? "Entregue" : "Desconhecido"}
+        Status:{" "}
+        <span className={getStatusStyle(orderData.status)}>
+          {orderData.status === 1
+            ? "Pendente"
+            : orderData.status === 2
+            ? "Em andamento"
+            : orderData.status === 3
+            ? "Finalizado"
+            : orderData.status === 4
+            ? "Entregue"
+            : "Desconhecido"}
         </span>
       </p>
     </div>

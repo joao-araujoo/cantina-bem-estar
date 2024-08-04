@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./styles.module.css";
 import { BsFire } from "react-icons/bs";
 import { ImSpoonKnife } from "react-icons/im";
@@ -12,6 +12,19 @@ const ProductModal = ({ product, onClose }) => {
   const { addToCart } = useCart();
   const [comment, setComment] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [selectedOptions, setSelectedOptions] = useState({});
+  const [price, setPrice] = useState(product.valor_produto);
+
+  useEffect(() => {
+    let newPrice = product.valor_produto;
+
+    // Atualiza o preço baseado na opção "tamanho"
+    if (selectedOptions.tamanho === "normal") {
+      newPrice += 2; // Ajuste o valor conforme necessário
+    }
+
+    setPrice(newPrice);
+  }, [selectedOptions, product.valor_produto]);
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -19,6 +32,29 @@ const ProductModal = ({ product, onClose }) => {
 
   const handleQuantityChange = (delta) => {
     setQuantity((prev) => Math.max(prev + delta, 1));
+  };
+
+  const handleOptionChange = (event) => {
+    setSelectedOptions({
+      ...selectedOptions,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const validateOptions = () => {
+    const requiredOptions = {
+      marmitas: ["tamanho", "acompanha-salada"],
+      bebidas: ["tamanho", "gelo"],
+    };
+
+    const required = requiredOptions[product.categoria.toLowerCase()] || [];
+
+    for (const option of required) {
+      if (!selectedOptions[option]) {
+        return false;
+      }
+    }
+    return true;
   };
 
   const renderCategoryIcon = () => {
@@ -54,14 +90,24 @@ const ProductModal = ({ product, onClose }) => {
                   <div className={styles.optionName}>Mini</div>
                   <div className={styles.optionPrice}>+ R$ 0,00</div>
                 </div>
-                <input type="radio" name="tamanho" value="mini" />
+                <input
+                  type="radio"
+                  name="tamanho"
+                  value="mini"
+                  onChange={handleOptionChange}
+                />
               </div>
               <div className={styles.optionItem}>
                 <div className={styles.optionDetails}>
                   <div className={styles.optionName}>Normal</div>
                   <div className={styles.optionPrice}>+ R$ 2,00</div>
                 </div>
-                <input type="radio" name="tamanho" value="normal" />
+                <input
+                  type="radio"
+                  name="tamanho"
+                  value="normal"
+                  onChange={handleOptionChange}
+                />
               </div>
             </div>
 
@@ -77,74 +123,31 @@ const ProductModal = ({ product, onClose }) => {
                 <div className={styles.optionDetails}>
                   <div className={styles.optionName}>Sim</div>
                 </div>
-                <input type="radio" name="acompanha-salada" value="sim" />
+                <input
+                  type="radio"
+                  name="acompanha-salada"
+                  value="sim"
+                  onChange={handleOptionChange}
+                />
               </div>
               <div className={styles.optionItem}>
                 <div className={styles.optionDetails}>
                   <div className={styles.optionName}>Não</div>
                 </div>
-                <input type="radio" name="acompanha-salada" value="nao" />
+                <input
+                  type="radio"
+                  name="acompanha-salada"
+                  value="nao"
+                  onChange={handleOptionChange}
+                />
               </div>
             </div>
           </div>
         );
 
       case "bebidas":
-        return (
-          <div className={styles.optionContainer}>
-            <div className={styles.labelContainer}>
-              <div className={styles.label}>
-                Tamanho
-                <p className={styles.description}>Selecione 1 opção</p>
-              </div>
-              <div className={styles.required}>OBRIGATÓRIO</div>
-            </div>
-            <div className={styles.options}>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>250ml</div>
-                  <div className={styles.optionPrice}>R$ 5</div>
-                </div>
-                <input type="radio" name="tamanho" value="250ml" />
-              </div>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>500ml</div>
-                  <div className={styles.optionPrice}>R$ 7</div>
-                </div>
-                <input type="radio" name="tamanho" value="500ml" />
-              </div>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>1L</div>
-                  <div className={styles.optionPrice}>R$ 10</div>
-                </div>
-                <input type="radio" name="tamanho" value="1L" />
-              </div>
-            </div>
-            <div className={styles.labelContainer}>
-              <div className={styles.label}>
-                Gelo
-                <p className={styles.description}>Selecione 1 opção</p>
-              </div>
-              <div className={styles.required}>OBRIGATÓRIO</div>
-            </div>
-            <div className={styles.options}>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>Com Gelo</div>
-                </div>
-                <input type="radio" name="gelo" value="com-gelo" />
-              </div>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>Sem Gelo</div>
-                </div>
-                <input type="radio" name="gelo" value="sem-gelo" />
-              </div>
-            </div>
-          </div>
-        );
+      case "sobremesas":
+        return null;
 
       default:
         return null;
@@ -152,7 +155,20 @@ const ProductModal = ({ product, onClose }) => {
   };
 
   const handleAddToCart = () => {
-    addToCart(product, quantity, comment);
+    if (!validateOptions()) {
+      toast.error("Por favor, selecione todas as opções obrigatórias.");
+      return;
+    }
+
+    const productWithOptions = {
+      ...product,
+      ...selectedOptions,
+      quantity,
+      comment,
+      price: price.toFixed(2), // Certifique-se de que o preço é formatado como string
+    };
+
+    addToCart(productWithOptions, quantity, comment);
 
     const itemCount = quantity > 1 ? `${quantity}x` : `1x`;
     const itemText =
@@ -161,7 +177,7 @@ const ProductModal = ({ product, onClose }) => {
         : `"${product.nome}" foi adicionado ao carrinho com sucesso!`;
 
     toast.success(`(${itemCount}) ${itemText}`, {
-      position: "top-center", // Alterado para topo centralizado
+      position: "top-center",
       autoClose: 3000,
       hideProgressBar: false,
       closeOnClick: true,
@@ -173,13 +189,10 @@ const ProductModal = ({ product, onClose }) => {
     onClose();
   };
 
-  const totalPrice = (product.valor_produto * quantity).toLocaleString(
-    "pt-BR",
-    {
-      style: "currency",
-      currency: "BRL",
-    }
-  );
+  const totalPrice = (price * quantity).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
 
   return (
     <div className={styles.modalOverlay} key={product.id_produto}>
@@ -239,10 +252,7 @@ const ProductModal = ({ product, onClose }) => {
               <button onClick={() => handleQuantityChange(1)}>+</button>
             </div>
           </div>
-          <button
-            className={styles.addButton}
-            onClick={() => handleAddToCart()}
-          >
+          <button className={styles.addButton} onClick={handleAddToCart}>
             Adicionar {totalPrice}
           </button>
         </div>

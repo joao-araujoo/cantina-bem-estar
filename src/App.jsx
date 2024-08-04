@@ -9,7 +9,7 @@ export default function App() {
     <AuthProvider>
       <CartProvider>
         <RouterProvider router={router} />
-        <ToastContainer />
+        <ToastContainer closeOnClick draggable limit={3} />
       </CartProvider>
     </AuthProvider>
   );
