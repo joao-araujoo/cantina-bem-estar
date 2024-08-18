@@ -6,14 +6,12 @@ import { FaPix, FaPaypal } from "react-icons/fa6";
 import { RiMastercardFill } from "react-icons/ri";
 import { GiTakeMyMoney } from "react-icons/gi";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom"; // Importar useNavigate
 
 export default function CartCheckoutContainer() {
   const { cart, clearCart, calculateSubtotal } = useCart();
   const { user } = useAuth();
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [pickupTime, setPickupTime] = useState("");
-  const navigate = useNavigate(); // Hook para navegação
 
   const subtotal = calculateSubtotal();
   const delivery = 0;
@@ -133,9 +131,8 @@ export default function CartCheckoutContainer() {
         }
       );
       clearCart();
-      setPaymentMethod(null); // Limpa o método de pagamento
-      setPickupTime(""); // Limpa o horário de retirada
-      navigate("/sections/orders"); // Navega para a página de pedidos após sucesso
+      setPaymentMethod(null);
+      setPickupTime("");
     } catch (error) {
       toast.error("Erro ao realizar o pedido. Tente novamente.", {
         position: "top-center",

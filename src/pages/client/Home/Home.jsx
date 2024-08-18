@@ -17,7 +17,6 @@ import useAuthCheck from "../../../hooks/useAuthCheck";
 export default function Home() {
   const { user } = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
@@ -53,7 +52,7 @@ export default function Home() {
     if (user) {
       setIsModalOpen(!isModalOpen);
     } else {
-      navigate("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
+      navigate("/login");
     }
   };
 

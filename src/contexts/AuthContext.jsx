@@ -9,7 +9,6 @@ export function AuthProvider({ children }) {
   const login = (userInfo, token, userType) => {
     const userWithUserType = { ...userInfo, userType };
     setUser(userWithUserType);
-    console.log(userWithUserType);
     localStorage.setItem("user", JSON.stringify(userWithUserType));
     localStorage.setItem("token", token);
   };

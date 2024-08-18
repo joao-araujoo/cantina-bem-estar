@@ -16,11 +16,11 @@ const ProductModal = ({ product, onClose }) => {
   const [price, setPrice] = useState(product.valor_produto);
 
   useEffect(() => {
-    let newPrice = product.valor_produto;
+    let newPrice = parseFloat(product.valor_produto);
 
     // Atualiza o preço baseado na opção "tamanho"
     if (selectedOptions.tamanho === "normal") {
-      newPrice += 2; // Ajuste o valor conforme necessário
+      newPrice += 2.0; // Ajuste o valor conforme necessário
     }
 
     setPrice(newPrice);
@@ -44,7 +44,6 @@ const ProductModal = ({ product, onClose }) => {
   const validateOptions = () => {
     const requiredOptions = {
       marmitas: ["tamanho", "acompanha-salada"],
-      bebidas: ["tamanho", "gelo"],
     };
 
     const required = requiredOptions[product.categoria.toLowerCase()] || [];
@@ -165,7 +164,7 @@ const ProductModal = ({ product, onClose }) => {
       ...selectedOptions,
       quantity,
       comment,
-      price: price.toFixed(2), // Certifique-se de que o preço é formatado como string
+      price: price.toFixed(2),
     };
 
     addToCart(productWithOptions, quantity, comment);

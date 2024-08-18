@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import OrderCard from "../../components/OrderCard/OrderCard";
 import SectionsContentHeader from "../../components/SectionsContentHeader/SectionsContentHeader";
 import useAuthCheck from "../../hooks/useAuthCheck";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Orders() {
   const [filter, setFilter] = useState("Todos");
   const [orders, setOrders] = useState([]);
+  const { user } = useAuth();
 
   useAuthCheck({ isEmployeeOnly: false });
 
@@ -16,7 +18,10 @@ export default function Orders() {
         const response = await fetch("http://localhost:3000/pedidos");
         const data = await response.json();
         if (data.status) {
-          setOrders(data.data); // Setando apenas o array de pedidos em 'data'
+          const userOrders = data.data.filter(
+            (order) => order.id_cliente === user.id_cliente
+          );
+          setOrders(userOrders);
         } else {
           console.error("Erro ao buscar pedidos:", data.msg);
         }
@@ -26,7 +31,7 @@ export default function Orders() {
     };
 
     fetchOrders();
-  }, []);
+  }, [user.id_cliente]);
 
   const filteredOrders = orders.filter((order) => {
     if (filter === "Todos") return true;
