@@ -1,13 +1,8 @@
 import { useState, useEffect } from 'react';
-import $ from 'jquery';
 import useAuthCheck from '../../hooks/useAuthCheck';
 
 export default function DashboardPedidos() {
   const [pedidos, setPedidos] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedPedido, setSelectedPedido] = useState(null);
-  const [status, setStatus] = useState(1); // Default status to "Pendente"
-  const [activeMenuId, setActiveMenuId] = useState(null);
 
   useAuthCheck({ isEmployeeOnly: true });
 
@@ -29,49 +24,6 @@ export default function DashboardPedidos() {
     }
   };
 
-  const handleShowModal = (pedido) => {
-    setSelectedPedido(pedido);
-    setStatus(pedido.status); // Set the status for the selected pedido
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedPedido(null);
-  };
-
-  const handleStatusChange = (e) => {
-    setStatus(parseInt(e.target.value, 10));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!selectedPedido) {
-      alert('Selecione um pedido para atualizar.');
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:3000/pedidos/${selectedPedido.id_pedido}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status }),
-      });
-      const data = await response.json();
-      if (data.status) {
-        fetchPedidos();
-        handleCloseModal();
-      } else {
-        alert(data.msg);
-      }
-    } catch (error) {
-      console.error('Erro ao atualizar status do pedido:', error);
-    }
-  };
-
   const handleDelete = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/pedidos/${id}`, {
@@ -88,93 +40,106 @@ export default function DashboardPedidos() {
     }
   };
 
-  const toggleMenu = (id) => {
-    setActiveMenuId(activeMenuId === id ? null : id);
+  const handleDragStart = (e, id) => {
+    e.dataTransfer.setData('pedidoId', id);
+    e.currentTarget.style.cursor = 'grabbing'; // Muda o cursor ao arrastar
   };
+
+  const handleDrop = async (e, status) => {
+    const pedidoId = e.dataTransfer.getData('pedidoId');
+    const updatedPedidos = pedidos.map(pedido => 
+      pedido.id_pedido.toString() === pedidoId ? { ...pedido, status } : pedido
+    );
+
+    setPedidos(updatedPedidos);
+
+    // Atualiza o status do pedido no servidor
+    try {
+      await fetch(`http://localhost:3000/pedidos/${pedidoId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status }),
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar status do pedido:', error);
+    }
+  };
+
+  const statusLabels = ['Pendente', 'Em andamento', 'Finalizado', 'Entregue'];
+  const statusColors = ['#007bff', '#ffcc00', '#28a745', '#6c757d'];
 
   return (
     <div className="container mt-5">
-      <div style={{ backgroundColor: '#F5F5F9', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', padding: '1rem', borderRadius: '5px' }}>
-        <h1>Pedidos</h1>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Cliente</th>
-              <th>Descrição</th>
-              <th>Status</th>
-              <th>Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pedidos.map((pedido) => (
-              <tr key={pedido.id_pedido}>
-                <td>{pedido.id_pedido}</td>
-                <td>{pedido.id_cliente}</td>
-                <td>{pedido.descricao}</td>
-                <td>{['Pendente', 'Em andamento', 'Finalizado', 'Entregue'][pedido.status - 1]}</td>
-                <td>
-                  <div className="dropdown">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" onClick={() => toggleMenu(pedido.id_pedido)}>
-                      ...
-                    </button>
-                    <div className={`dropdown-menu ${activeMenuId === pedido.id_pedido ? 'show' : ''}`}>
-                      <button className="dropdown-item" onClick={() => handleShowModal(pedido)}>
-                        Alterar Status
-                      </button>
-                      <button className="dropdown-item" onClick={() => handleDelete(pedido.id_pedido)}>
-                        Excluir
-                      </button>
-                    </div>
+      <div style={{ display: 'flex', height: '100%', justifyContent: 'space-between' }}>
+        {statusLabels.map((statusLabel, index) => (
+          <div
+            key={index}
+            onDrop={(e) => handleDrop(e, index + 1)}
+            onDragOver={(e) => e.preventDefault()}
+            style={{
+              backgroundColor: statusColors[index],
+              color: '#fff',
+              border: '1px solid #ddd',
+              borderRadius: '5px',
+              padding: '1rem',
+              margin: '0 1rem',
+              minHeight: '200px', // Aumenta a altura mínima
+              flex: 1, // Faz os containers ocuparem o espaço disponível
+              marginRight: index < statusLabels.length - 1 ? '1rem' : '0', // Margem entre containers
+            }}
+          >
+            <h4 style={{ color: '#fff' }}>{statusLabel}</h4>
+            {pedidos
+              .filter(pedido => pedido.status === index + 1) // Filtra os pedidos pelo status
+              .map((pedido) => (
+                <div
+                  key={pedido.id_pedido}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, pedido.id_pedido)}
+                  style={{
+                    userSelect: 'none',
+                    padding: '0.5rem',
+                    margin: '0.5rem 0',
+                    backgroundColor: '#fff',
+                    border: '1px solid #ccc',
+                    borderRadius: '5px',
+                    color: '#000', // Texto dos pedidos em preto
+                    cursor: 'grab', // Muda o cursor para 'grab' ao passar sobre o item
+                  }}
+                  onMouseOver={(e) => (e.currentTarget.style.cursor = 'grab')} // Muda o cursor ao passar o mouse
+                  onMouseOut={(e) => (e.currentTarget.style.cursor = 'default')} // Restaura o cursor ao sair
+                >
+                  <div>
+                    <strong>ID:</strong> {pedido.id_pedido}
                   </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className={`modal ${showModal ? 'd-block' : 'd-none'}`} tabIndex="-1" role="dialog">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Alterar Status do Pedido</h5>
-              <button
-                type="button"
-                className="close"
-                style={{ marginLeft: 'auto' }}
-                aria-label="Close"
-                onClick={handleCloseModal}
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-
-            <div className="modal-body">
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label>Status</label>
-                  <select className="form-control" value={status} onChange={handleStatusChange} required>
-                    <option value={1}>Pendente</option>
-                    <option value={2}>Em andamento</option>
-                    <option value={3}>Finalizado</option>
-                    <option value={4}>Entregue</option>
-                  </select>
+                  <div>
+                    <strong>Cliente:</strong> {pedido.id_cliente}
+                  </div>
+                  <div>
+                    <strong>Descrição:</strong> {pedido.descricao}
+                  </div>
+                  <div>
+                    <strong>Status:</strong> {statusLabels[pedido.status - 1]}
+                  </div>
+                  <button 
+                    onClick={() => handleDelete(pedido.id_pedido)} 
+                    style={{
+                      backgroundColor: 'red',
+                      color: '#fff',
+                      border: 'none',
+                      borderRadius: '5px',
+                      padding: '0.5rem 1rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Excluir
+                  </button>
                 </div>
-                <button type="submit" className="btn btn-primary" style={{ marginTop: '20px' }}>
-                  Salvar Alterações
-                </button>
-
-              </form>
-            </div>
-
-            <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>
-                Fechar
-              </button>
-            </div>
+              ))}
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

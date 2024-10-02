@@ -1,14 +1,24 @@
-import { NavLink } from 'react-router-dom';
-import styles from './styles.module.css';
+import { NavLink, useNavigate } from "react-router-dom";
+import styles from "./styles.module.css";
 import { GoHomeFill } from "react-icons/go";
 import { MdBorderColor } from "react-icons/md";
 import { MdDinnerDining } from "react-icons/md";
 import { MdPerson } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
+import { FiLogOut } from "react-icons/fi";
+import { useAuth } from "../../contexts/AuthContext";
 
-const Sidebar = () => {
+const DashboardSidebar = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   const handleLinkClick = (e) => {
-    const ripple = document.createElement('span');
+    const ripple = document.createElement("span");
     ripple.className = styles.ripple;
     ripple.style.left = `${e.clientX - e.target.offsetLeft}px`;
     ripple.style.top = `${e.clientY - e.target.offsetTop}px`;
@@ -69,9 +79,15 @@ const Sidebar = () => {
           <GiCook size={25} />
           Funcionários
         </NavLink>
+        <div className={styles.logoutContainer}>
+          <button className={styles.logoutButton} onClick={handleLogout}>
+            <FiLogOut size={25} />
+            Logout
+          </button>
+        </div>
       </div>
     </>
   );
 };
 
-export default Sidebar;
+export default DashboardSidebar;

@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../../components/Sidebar/Siderbar';
+import Sidebar from '../../components/DashboardSidebar/DashboardSiderbar';
 import styles from './styles.module.css';
 
 const DashboardTemplate = () => {

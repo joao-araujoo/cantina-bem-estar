@@ -2,9 +2,6 @@ import { useState } from "react";
 import { useCart } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./styles.module.css";
-import { FaPix, FaPaypal } from "react-icons/fa6";
-import { RiMastercardFill } from "react-icons/ri";
-import { GiTakeMyMoney } from "react-icons/gi";
 import { toast } from "react-toastify";
 
 export default function CartCheckoutContainer() {
@@ -30,21 +27,10 @@ export default function CartCheckoutContainer() {
         }
       );
       return;
-    }
+    } 
 
     if (!user) {
       toast.error("Você precisa estar logado para realizar um pedido.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        progress: undefined,
-      });
-      return;
-    }
-
-    if (!paymentMethod) {
-      toast.error("Selecione um método de pagamento.", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: false,
@@ -189,56 +175,6 @@ export default function CartCheckoutContainer() {
         value={pickupTime}
         onChange={(e) => setPickupTime(e.target.value)}
       />
-      <div className={styles.paymentMethods}>
-        <label className={styles.paymentLabel}>
-          <input
-            type="radio"
-            name="payment"
-            value="PIX"
-            className={styles.paymentRadio}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          <span className={styles.paymentButton} title="PIX">
-            <FaPix />
-          </span>
-        </label>
-        <label className={styles.paymentLabel}>
-          <input
-            type="radio"
-            name="payment"
-            value="Cartão"
-            className={styles.paymentRadio}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          <span className={styles.paymentButton} title="Cartão">
-            <RiMastercardFill />
-          </span>
-        </label>
-        <label className={styles.paymentLabel}>
-          <input
-            type="radio"
-            name="payment"
-            value="PayPal"
-            className={styles.paymentRadio}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          <span className={styles.paymentButton} title="PayPal">
-            <FaPaypal />
-          </span>
-        </label>
-        <label className={styles.paymentLabel}>
-          <input
-            type="radio"
-            name="payment"
-            value="Pagar na hora"
-            className={styles.paymentRadio}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-          />
-          <span className={styles.paymentButton} title="Pagar na hora">
-            <GiTakeMyMoney />
-          </span>
-        </label>
-      </div>
       <button className={styles.purchaseButton} onClick={handlePlaceOrder}>
         Finalizar Compra
       </button>
