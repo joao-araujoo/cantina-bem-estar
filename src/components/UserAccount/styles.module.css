@@ -8,7 +8,7 @@
     background-color: #fff;
     padding: 30px 20px;
     border-radius: 10px;
-    box-shadow: 0px 0px 2px 1px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
 .profilePictureWrapper {
@@ -37,15 +37,9 @@
     place-content: center;
 }
 
-.formRow {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
-.formRow label {
+.formLabel {
     display: block;
-    width: 48%;
+    width: 100%; 
     margin-bottom: 10px;
 }
 
@@ -66,15 +60,16 @@
     font-weight: 500;
     cursor: pointer;
     border-radius: 5px;
+    width: 100%; 
 }
 
 /* Responsividade */
 @media (max-width: 600px) {
-    .formRow {
-        flex-direction: column;
+    .wrapper {
+        padding: 20px 10px;
     }
 
     .formLabel {
-        width: 100% !important;
+        width: 100%; 
     }
 }

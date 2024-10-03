@@ -16,38 +16,44 @@ export default function CartCheckoutContainer() {
 
   const handlePlaceOrder = async () => {
     if (cart.length === 0) {
-      toast.error(
-        "O carrinho está vazio. Adicione itens antes de finalizar a compra.",
-        {
+      setTimeout(() => {
+        toast.error(
+          "O carrinho está vazio. Adicione itens antes de finalizar a compra.",
+          {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+          }
+        );
+      }, 300);
+      return;
+    } 
+
+    if (!user) {
+      setTimeout(() => {
+        toast.error("Você precisa estar logado para realizar um pedido.", {
           position: "top-center",
           autoClose: 3000,
           hideProgressBar: false,
           closeOnClick: true,
           progress: undefined,
-        }
-      );
-      return;
-    } 
-
-    if (!user) {
-      toast.error("Você precisa estar logado para realizar um pedido.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        progress: undefined,
-      });
+        });
+      }, 300);
       return;
     }
 
     if (!pickupTime) {
-      toast.error("O horário de retirada é obrigatório.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        progress: undefined,
-      });
+      setTimeout(() => {
+        toast.error("O horário de retirada é obrigatório.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+        });
+      }, 300);
       return;
     }
 
@@ -60,10 +66,9 @@ export default function CartCheckoutContainer() {
 
     const observation = cart
       .map((item) => (item.comment ? `${item.nome} - ${item.comment}` : ""))
-      .filter((obs) => obs) // Remove entradas vazias
+      .filter((obs) => obs)
       .join(", ");
 
-    // Formata o horário para o formato do banco de dados
     const now = new Date();
     const formattedPickupTime = new Date(
       `${now.toISOString().split("T")[0]}T${pickupTime}:00Z`
@@ -77,7 +82,7 @@ export default function CartCheckoutContainer() {
       id_produtos: JSON.stringify(cart),
       valor_total: total,
       pagamento: paymentMethod,
-      horario_retirada: formattedPickupTime, // Adiciona o horário de retirada
+      horario_retirada: formattedPickupTime,
     };
 
     try {
@@ -93,40 +98,44 @@ export default function CartCheckoutContainer() {
         throw new Error("Erro ao realizar o pedido");
       }
 
-      toast.success(
-        <div>
-          Pedido realizado com sucesso!
-          <br />
-          <a
-            href="/sections/orders"
-            style={{
-              color: "#000",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
-          >
-            Ver meus pedidos
-          </a>
-        </div>,
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          progress: undefined,
-        }
-      );
+      setTimeout(() => {
+        toast.success(
+          <div>
+            Pedido realizado com sucesso!
+            <br />
+            <a
+              href="/sections/orders"
+              style={{
+                color: "#000",
+                textDecoration: "none",
+                fontWeight: "600",
+              }}
+            >
+              Ver meus pedidos
+            </a>
+          </div>,
+          {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            progress: undefined,
+          }
+        );
+      }, 300);
       clearCart();
       setPaymentMethod(null);
       setPickupTime("");
     } catch (error) {
-      toast.error("Erro ao realizar o pedido. Tente novamente.", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        progress: undefined,
-      });
+      setTimeout(() => {
+        toast.error("Erro ao realizar o pedido. Tente novamente.", {
+          position: "top-center",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          progress: undefined,
+        });
+      }, 300);
     }
   };
 

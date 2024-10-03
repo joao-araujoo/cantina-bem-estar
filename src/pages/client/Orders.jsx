@@ -14,24 +14,27 @@ export default function Orders() {
 
   useEffect(() => {
     const fetchOrders = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/pedidos");
-        const data = await response.json();
-        if (data.status) {
-          const userOrders = data.data.filter(
-            (order) => order.id_cliente === user.id_cliente
-          );
-          setOrders(userOrders);
-        } else {
-          console.error("Erro ao buscar pedidos:", data.msg);
+      if (user && user.id_cliente) {
+        try {
+          const response = await fetch("http://localhost:3000/pedidos");
+          const data = await response.json();
+          if (data.status) {
+            console.log(data.data);
+            const userOrders = data.data.filter(
+              (order) => order.id_cliente === user.id_cliente
+            );
+            setOrders(userOrders);
+          } else {
+            console.error("Erro ao buscar pedidos:", data.msg);
+          }
+        } catch (error) {
+          console.error("Erro ao buscar pedidos:", error);
         }
-      } catch (error) {
-        console.error("Erro ao buscar pedidos:", error);
       }
     };
 
     fetchOrders();
-  }, [user.id_cliente]);
+  }, [user]);
 
   const filteredOrders = orders.filter((order) => {
     if (filter === "Todos") return true;
@@ -91,7 +94,6 @@ export default function Orders() {
           Entregue
         </button>
       </div>
-      {/* Verifica se há pedidos filtrados */}
       {filteredOrders.length > 0 ? (
         filteredOrders.map((order) => (
           <OrderCard orderData={order} key={order.id_pedido} />

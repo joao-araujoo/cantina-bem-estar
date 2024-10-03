@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import { AiOutlineLoading } from "react-icons/ai";
 import styles from "../Login/styles.module.css";
+import $ from "jquery";
+import "jquery-mask-plugin";
 
 export default function Register() {
   const [nome, setNome] = useState("");
@@ -15,6 +15,10 @@ export default function Register() {
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [fotoPerfilUrl, setFotoPerfilUrl] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    $("#phone").mask("(00) 00000-0000");
+  }, []);
 
   const validatePhoneNumber = (number) => {
     return number.length >= 10;
@@ -34,9 +38,7 @@ export default function Register() {
     }
 
     if (!validatePhoneNumber(telefone)) {
-      toast.error(
-        "Número de telefone inválido."
-      );
+      toast.error("Número de telefone inválido.");
       return;
     }
 
@@ -91,11 +93,7 @@ export default function Register() {
   return (
     <div className={styles.wrapper}>
       <header>
-        <img
-          width={100}
-          src="/Logo Branca.png"
-          alt="Logo - Cantina Bem Estar"
-        />
+        <img width={100} src="/Logo Branca.png" alt="Logo - Cantina Bem Estar" />
       </header>
       <main>
         <form className="login-form" onSubmit={handleSubmit}>
@@ -140,20 +138,13 @@ export default function Register() {
           />
 
           <label htmlFor="phone">Telefone</label>
-          <PhoneInput
-            country={"br"}
+          <input
+            type="text"
+            id="phone"
+            placeholder="(00) 00000-0000"
             value={telefone}
-            onChange={(phone) => setTelefone(phone)}
-            inputProps={{
-              name: "phone",
-              required: true,
-              autoFocus: true,
-            }}
-            containerClass="phone-input-container"
-            inputClass="phone-input"
-            isValid={(value) => {
-              return validatePhoneNumber(value);
-            }}
+            onChange={(e) => setTelefone(e.target.value)}
+            required
           />
 
           {fotoPerfilUrl && (
@@ -175,11 +166,7 @@ export default function Register() {
           />
 
           <button type="submit" disabled={loading}>
-            {loading ? (
-              <AiOutlineLoading className={styles.spinner} />
-            ) : (
-              "Criar Conta"
-            )}
+            {loading ? <AiOutlineLoading className={styles.spinner} /> : "Criar Conta"}
           </button>
         </form>
         <ToastContainer />

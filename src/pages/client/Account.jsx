@@ -5,6 +5,8 @@ import { HiPencil } from "react-icons/hi";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import useAuthCheck from "../../hooks/useAuthCheck";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Account() {
   const { user, setUser } = useAuth();
@@ -17,8 +19,8 @@ export default function Account() {
     const dataToSend = {
       nome: editedInfo.nome || user.nome,
       email: editedInfo.email || user.email,
-      telefone: editedInfo.telefone || user.telefone,
-      qtd_pedidos: editedInfo.qtd_pedidos || user.qtd_pedidos,
+      telefone: editedInfo.telefone || user.telefone, // Adiciona telefone
+      qtd_pedidos: user.qtd_pedidos, // Mantém o qtd_pedidos atual
     };
 
     if (editedInfo.senha) {
@@ -39,16 +41,18 @@ export default function Account() {
       if (data.status) {
         setUser((prevUser) => {
           const updatedUser = { ...prevUser, ...data.data };
-          // Atualiza o localStorage
-          localStorage.setItem("user", JSON.stringify(updatedUser));
+          localStorage.setItem("user", JSON.stringify(updatedUser)); // Atualiza localStorage
           return updatedUser;
         });
+        toast.success("Perfil atualizado com sucesso!");
         setEditMode(false);
         navigate("/sections/account");
       } else {
+        toast.error("Erro ao salvar!");
         console.error("Erro ao atualizar perfil:", data.msg);
       }
     } catch (error) {
+      toast.error("Erro ao salvar!");
       console.error("Erro ao atualizar perfil:", error);
     }
   };
