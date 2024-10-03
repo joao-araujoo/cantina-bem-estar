@@ -16,6 +16,23 @@
 
 .cart-menu header {
   padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.close-cart-button {
+  background: none;
+  border: none;
+  color: #e34534;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 5px;
+  transition: color 0.2s ease;
+}
+
+.close-cart-button:hover {
+  color: #c42c2c;
 }
 
 .cart-menu .cart-items {

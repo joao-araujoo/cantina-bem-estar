@@ -4,17 +4,17 @@ const CartContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([]);
-
-  useEffect(() => {
+  const [cart, setCart] = useState(() => {
     const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCart(JSON.parse(storedCart));
-    }
-  }, []);
+    return storedCart ? JSON.parse(storedCart) : [];
+  });
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
+    if (cart.length > 0) {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      localStorage.removeItem("cart");  // Remove do localStorage se estiver vazio
+    }
   }, [cart]);
 
   const addToCart = (product, quantity, comment) => {
@@ -49,7 +49,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const clearCart = () => {
-    setCart([]);
+    setCart([]); // Vai remover tudo e agora também apagar do localStorage
   };
 
   const calculateSubtotal = () => {

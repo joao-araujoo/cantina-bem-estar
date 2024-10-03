@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import useAuthCheck from '../../hooks/useAuthCheck';
+import { useState, useEffect } from "react";
+import useAuthCheck from "../../hooks/useAuthCheck";
 
 export default function DashboardPedidos() {
   const [pedidos, setPedidos] = useState([]);
@@ -12,7 +12,7 @@ export default function DashboardPedidos() {
 
   const fetchPedidos = async () => {
     try {
-      const response = await fetch('http://localhost:3000/pedidos');
+      const response = await fetch("http://localhost:3000/pedidos");
       const data = await response.json();
       if (data.status) {
         setPedidos(data.data);
@@ -20,14 +20,19 @@ export default function DashboardPedidos() {
         alert(data.msg);
       }
     } catch (error) {
-      console.error('Erro ao buscar pedidos:', error);
+      console.error("Erro ao buscar pedidos:", error);
     }
   };
 
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Tem certeza que deseja excluir este pedido?"
+    );
+    if (!confirmDelete) return;
+
     try {
       const response = await fetch(`http://localhost:3000/pedidos/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
       const data = await response.json();
       if (data.status) {
@@ -36,18 +41,18 @@ export default function DashboardPedidos() {
         alert(data.msg);
       }
     } catch (error) {
-      console.error('Erro ao excluir pedido:', error);
+      console.error("Erro ao excluir pedido:", error);
     }
   };
 
   const handleDragStart = (e, id) => {
-    e.dataTransfer.setData('pedidoId', id);
-    e.currentTarget.style.cursor = 'grabbing'; // Muda o cursor ao arrastar
+    e.dataTransfer.setData("pedidoId", id);
+    e.currentTarget.style.cursor = "grabbing"; // Muda o cursor ao arrastar
   };
 
   const handleDrop = async (e, status) => {
-    const pedidoId = e.dataTransfer.getData('pedidoId');
-    const updatedPedidos = pedidos.map(pedido => 
+    const pedidoId = e.dataTransfer.getData("pedidoId");
+    const updatedPedidos = pedidos.map((pedido) =>
       pedido.id_pedido.toString() === pedidoId ? { ...pedido, status } : pedido
     );
 
@@ -56,90 +61,134 @@ export default function DashboardPedidos() {
     // Atualiza o status do pedido no servidor
     try {
       await fetch(`http://localhost:3000/pedidos/${pedidoId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ status }),
       });
     } catch (error) {
-      console.error('Erro ao atualizar status do pedido:', error);
+      console.error("Erro ao atualizar status do pedido:", error);
     }
   };
 
-  const statusLabels = ['Pendente', 'Em andamento', 'Finalizado', 'Entregue'];
-  const statusColors = ['#007bff', '#ffcc00', '#28a745', '#6c757d'];
+  const statusLabels = ["Pendente", "Em andamento", "Finalizado", "Entregue"];
+  const statusColors = ["#007bff", "#ffcc00", "#28a745", "#6c757d"];
+
+  // Ordena os pedidos pelo horário de retirada
+  const sortedPedidos = pedidos.sort(
+    (a, b) => new Date(a.horario_retirada) - new Date(b.horario_retirada)
+  );
 
   return (
     <div className="container mt-5">
-      <div style={{ display: 'flex', height: '100%', justifyContent: 'space-between' }}>
-        {statusLabels.map((statusLabel, index) => (
-          <div
-            key={index}
-            onDrop={(e) => handleDrop(e, index + 1)}
-            onDragOver={(e) => e.preventDefault()}
-            style={{
-              backgroundColor: statusColors[index],
-              color: '#fff',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              padding: '1rem',
-              margin: '0 1rem',
-              minHeight: '200px', // Aumenta a altura mínima
-              flex: 1, // Faz os containers ocuparem o espaço disponível
-              marginRight: index < statusLabels.length - 1 ? '1rem' : '0', // Margem entre containers
-            }}
-          >
-            <h4 style={{ color: '#fff' }}>{statusLabel}</h4>
-            {pedidos
-              .filter(pedido => pedido.status === index + 1) // Filtra os pedidos pelo status
-              .map((pedido) => (
+      <div
+        style={{
+          display: "flex",
+          height: "100%",
+          justifyContent: "space-between",
+        }}
+      >
+        {statusLabels.map((statusLabel, index) => {
+          const filteredPedidos = sortedPedidos.filter(
+            (pedido) => pedido.status === index + 1
+          );
+          const count = filteredPedidos.length;
+
+          return (
+            <div
+              key={index}
+              onDrop={(e) => handleDrop(e, index + 1)}
+              onDragOver={(e) => e.preventDefault()}
+              style={{
+                backgroundColor: statusColors[index],
+                color: "#fff",
+                border: "1px solid #ddd",
+                borderRadius: "5px",
+                padding: "1rem",
+                margin: "0 1rem",
+                minHeight: "200px", // Aumenta a altura mínima
+                flex: 1, // Faz os containers ocuparem o espaço disponível
+                marginRight: index < statusLabels.length - 1 ? "1rem" : "0", // Margem entre containers
+              }}
+            >
+              <h4 style={{ color: "#fff" }}>
+                {statusLabel} <span>({count})</span>
+              </h4>
+              {filteredPedidos.map((pedido) => (
                 <div
                   key={pedido.id_pedido}
                   draggable
                   onDragStart={(e) => handleDragStart(e, pedido.id_pedido)}
                   style={{
-                    userSelect: 'none',
-                    padding: '0.5rem',
-                    margin: '0.5rem 0',
-                    backgroundColor: '#fff',
-                    border: '1px solid #ccc',
-                    borderRadius: '5px',
-                    color: '#000', // Texto dos pedidos em preto
-                    cursor: 'grab', // Muda o cursor para 'grab' ao passar sobre o item
+                    userSelect: "none",
+                    padding: "0.5rem",
+                    margin: "0.5rem 0",
+                    backgroundColor: "#fff",
+                    border: "1px solid #ccc",
+                    borderRadius: "5px",
+                    color: "#000", // Texto dos pedidos em preto
+                    cursor: "grab", // Muda o cursor para 'grab' ao passar sobre o item
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.cursor = 'grab')} // Muda o cursor ao passar o mouse
-                  onMouseOut={(e) => (e.currentTarget.style.cursor = 'default')} // Restaura o cursor ao sair
+                  onMouseOver={(e) => (e.currentTarget.style.cursor = "grab")} // Muda o cursor ao passar o mouse
+                  onMouseOut={(e) => (e.currentTarget.style.cursor = "default")} // Restaura o cursor ao sair
                 >
                   <div>
-                    <strong>ID:</strong> {pedido.id_pedido}
+                    <strong>ID:</strong> #{pedido.id_pedido}
                   </div>
                   <div>
-                    <strong>Cliente:</strong> {pedido.id_cliente}
+                    <strong>Cliente:</strong> #{pedido.id_cliente}
                   </div>
                   <div>
                     <strong>Descrição:</strong> {pedido.descricao}
                   </div>
+                  {pedido.obs ? (
+                    <div>
+                      <strong>Observação:</strong> {pedido.obs}
+                    </div>
+                  ) : null}
+
                   <div>
-                    <strong>Status:</strong> {statusLabels[pedido.status - 1]}
+                    <strong>Horário de Retirada:</strong> 🕑{" "}
+                    <span
+                      style={{
+                        color:
+                          new Date(pedido.horario_retirada).getTime() >
+                          Date.now()
+                            ? "red"
+                            : "black",
+                      }}
+                    >
+                      {new Date(pedido.horario_retirada).toLocaleTimeString(
+                        [],
+                        {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        }
+                      )}
+                    </span>
                   </div>
-                  <button 
-                    onClick={() => handleDelete(pedido.id_pedido)} 
+
+                  <button
+                    onClick={() => handleDelete(pedido.id_pedido)}
                     style={{
-                      backgroundColor: 'red',
-                      color: '#fff',
-                      border: 'none',
-                      borderRadius: '5px',
-                      padding: '0.5rem 1rem',
-                      cursor: 'pointer',
+                      backgroundColor: "red",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: "5px",
+                      padding: "0.5rem 1rem",
+                      cursor: "pointer",
+                      width: "100%",
+                      marginTop: "10px",
                     }}
                   >
                     Excluir
                   </button>
                 </div>
               ))}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./styles.module.css";
 import { BsFire } from "react-icons/bs";
 import { ImSpoonKnife } from "react-icons/im";
@@ -12,19 +12,7 @@ const ProductModal = ({ product, onClose }) => {
   const { addToCart } = useCart();
   const [comment, setComment] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [selectedOptions, setSelectedOptions] = useState({});
   const [price, setPrice] = useState(product.valor_produto);
-
-  useEffect(() => {
-    let newPrice = parseFloat(product.valor_produto);
-
-    // Atualiza o preço baseado na opção "tamanho"
-    if (selectedOptions.tamanho === "normal") {
-      newPrice += 2.0; // Ajuste o valor conforme necessário
-    }
-
-    setPrice(newPrice);
-  }, [selectedOptions, product.valor_produto]);
 
   const handleCommentChange = (event) => {
     setComment(event.target.value);
@@ -32,28 +20,6 @@ const ProductModal = ({ product, onClose }) => {
 
   const handleQuantityChange = (delta) => {
     setQuantity((prev) => Math.max(prev + delta, 1));
-  };
-
-  const handleOptionChange = (event) => {
-    setSelectedOptions({
-      ...selectedOptions,
-      [event.target.name]: event.target.value,
-    });
-  };
-
-  const validateOptions = () => {
-    const requiredOptions = {
-      marmitas: ["tamanho", "acompanha-salada"],
-    };
-
-    const required = requiredOptions[product.categoria.toLowerCase()] || [];
-
-    for (const option of required) {
-      if (!selectedOptions[option]) {
-        return false;
-      }
-    }
-    return true;
   };
 
   const renderCategoryIcon = () => {
@@ -69,102 +35,12 @@ const ProductModal = ({ product, onClose }) => {
     }
   };
 
-  const renderCategorySpecificContent = () => {
-    const category = product.categoria.toLowerCase();
-
-    switch (category) {
-      case "marmitas":
-        return (
-          <div className={styles.optionContainer}>
-            <div className={styles.labelContainer}>
-              <div className={styles.label}>
-                Tamanho
-                <p className={styles.description}>Selecione 1 opção</p>
-              </div>
-              <div className={styles.required}>OBRIGATÓRIO</div>
-            </div>
-            <div className={styles.options}>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>Mini</div>
-                  <div className={styles.optionPrice}>+ R$ 0,00</div>
-                </div>
-                <input
-                  type="radio"
-                  name="tamanho"
-                  value="mini"
-                  onChange={handleOptionChange}
-                />
-              </div>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>Normal</div>
-                  <div className={styles.optionPrice}>+ R$ 2,00</div>
-                </div>
-                <input
-                  type="radio"
-                  name="tamanho"
-                  value="normal"
-                  onChange={handleOptionChange}
-                />
-              </div>
-            </div>
-
-            <div className={styles.labelContainer}>
-              <div className={styles.label}>
-                Acompanha Salada
-                <p className={styles.description}>Selecione uma opção</p>
-              </div>
-              <div className={styles.required}>OBRIGATÓRIO</div>
-            </div>
-            <div className={styles.options}>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>Sim</div>
-                </div>
-                <input
-                  type="radio"
-                  name="acompanha-salada"
-                  value="sim"
-                  onChange={handleOptionChange}
-                />
-              </div>
-              <div className={styles.optionItem}>
-                <div className={styles.optionDetails}>
-                  <div className={styles.optionName}>Não</div>
-                </div>
-                <input
-                  type="radio"
-                  name="acompanha-salada"
-                  value="nao"
-                  onChange={handleOptionChange}
-                />
-              </div>
-            </div>
-          </div>
-        );
-
-      case "bebidas":
-      case "sobremesas":
-        return null;
-
-      default:
-        return null;
-    }
-  };
-
   const handleAddToCart = () => {
-    if (!validateOptions()) {
-      toast.error("Por favor, selecione todas as opções obrigatórias.");
-      return;
-    }
-
     const productWithOptions = {
       ...product,
-      ...selectedOptions,
       quantity,
       comment,
-      price: price.toFixed(2),
+      price: product.valor_produto,
     };
 
     addToCart(productWithOptions, quantity, comment);
@@ -215,8 +91,6 @@ const ProductModal = ({ product, onClose }) => {
           </div>
           <div className={styles.detailsContainer}>
             <p style={{ color: "#666" }}>{product.descricao}</p>
-
-            {renderCategorySpecificContent()}
 
             <div className={styles.commentSection}>
               <div className={styles.commentHeader}>

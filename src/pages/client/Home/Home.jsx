@@ -13,14 +13,17 @@ import UserModal from "../../../components/UserModal/UserModal";
 import ProductModal from "../../../components/ProductModal/ProductModal";
 import { useAuth } from "../../../contexts/AuthContext";
 import useAuthCheck from "../../../hooks/useAuthCheck";
+import { useCart } from "../../../contexts/CartContext";
 
 export default function Home() {
   const { user } = useAuth();
+  const { cart } = useCart();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [products, setProducts] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cartCount, setCartCount] = useState(0);
   const cartMenu = useRef(null);
   const hamburgerRef = useRef(null);
   const navigate = useNavigate();
@@ -40,6 +43,22 @@ export default function Home() {
 
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    const updateCartCount = async () => {
+      try {
+        const itemCount = cart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+        setCartCount(itemCount);
+      } catch (error) {
+        console.error("Erro ao buscar itens do carrinho:", error);
+      }
+    };
+
+    updateCartCount();
+  }, [cart]);
 
   const handleCartMenuClick = () => {
     const newRightValue =
@@ -74,7 +93,9 @@ export default function Home() {
   };
 
   const handleSearchBarProductClick = (product) => {
-    setSelectedProduct(product); // Define o produto selecionado
+    setSelectedProduct(product);
+    setSearchText("");
+    setSearchResults([]);
   };
 
   // Agrupa produtos por categoria
@@ -184,7 +205,10 @@ export default function Home() {
                   <div
                     key={result.id_produto}
                     className={styles.searchBarProduct}
-                    onClick={() => handleSearchBarProductClick(result)} // Abre o modal com o produto selecionado
+                    onClick={() => {
+                      handleSearchBarProductClick(result); // Chama a função de clique no produto
+                      setIsModalOpen(false); // Fecha o modal de pesquisa
+                    }}
                   >
                     <div
                       style={{
@@ -227,14 +251,16 @@ export default function Home() {
             ref={hamburgerRef}
           >
             <HiOutlineShoppingBag />
+            <span className={styles.cartCountBadge}>{cartCount}</span>
           </button>
+
           <button className="user-button" onClick={handleUserButtonClick}>
             {user ? <HiMiniUser /> : <FiLogIn />}
           </button>
         </div>
       </header>
 
-      <Cart menuRef={cartMenu} />
+      <Cart menuRef={cartMenu} handleCloseCart={handleCartMenuClick} />
       {isModalOpen && <UserModal />}
 
       <main>

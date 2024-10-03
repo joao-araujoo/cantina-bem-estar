@@ -5,20 +5,21 @@ import CheckoutContainer from "./CheckoutContainer/CheckoutContainer";
 import CartItem from "./CartItem/CartItem";
 
 // eslint-disable-next-line react/prop-types
-export default function Cart({ menuRef }) {
+export default function Cart({ menuRef, handleCloseCart }) {
   const { cart } = useCart();
 
   return (
     <div className="cart-menu" ref={menuRef}>
-      <header>
+      <header className="cart-header">
         <h2>Meu carrinho</h2>
+        <button className="close-cart-button" onClick={handleCloseCart}>
+          ✖
+        </button>
       </header>
       <div className="cart-items">
         {cart.length === 0 ? (
           <div className="empty-cart">
-            <p>
-              Seu carrinho está vazio =(
-            </p>
+            <p>Seu carrinho está vazio =(</p>
           </div>
         ) : (
           <>
