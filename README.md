@@ -8,11 +8,15 @@
 - Padronizar entrada de telefone ✅
 - Remover opções de pagamento na página de finalizar pedido ✅
 - Adicionar botão de logout no dashboard ✅
-- Arrumar notificações toasts ✅
+- Arrumar notificações toasts ❌
 - Arrumar id_cliente ao entrar na página "Pedidos" ✅
+- Adicionar código pra retirada de pedido igual ifood (final do número) ✅
+- Colocar um "i" de info nos status na página de pedidos pro usuário saber com detalhes (pendente = "seu pedido foi recebido e será preparado em breve", em andamento = "seu pedido está sendo preparado", finalizado = "seu pedido foi finalizado e está pronto já pode ser retirado", entregue = "seu pedido foi concluido com sucesso") ✅
 - Trocar o carrossel e adicionar imagem de marmitas reais ❌
-- Arrumar fonte bugada do bootstrap ou removê-lo ❌
-- Mandar mensagem com os status do pedido ❌ (zap ou email)
+- Mandar mensagem com os status do pedido (zap ou email) ✅
 - Arrumar atualização de imagens de produtos do dashboard ❌
 - Adicionar gráficos na página principal do dashboard e cards de valores totais, etc ❌ (gráfico de valor de vendas)
 - Arrumar a edição de imagem de perfil ❌
+- Arrumar carrinho do localstorage que fica o mesmo quando troca de conta ✅
+- ARRUMAR O FUSO HORARIO DAS HORAS!!!! ❌ **************
+- Somar quantidade de pedidos ao fazer pedido ✅

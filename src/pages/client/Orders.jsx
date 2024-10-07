@@ -19,7 +19,6 @@ export default function Orders() {
           const response = await fetch("http://localhost:3000/pedidos");
           const data = await response.json();
           if (data.status) {
-            console.log(data.data);
             const userOrders = data.data.filter(
               (order) => order.id_cliente === user.id_cliente
             );

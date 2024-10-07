@@ -3,6 +3,7 @@ import { useCart } from "../../contexts/CartContext";
 import { useAuth } from "../../contexts/AuthContext";
 import styles from "./styles.module.css";
 import { toast } from "react-toastify";
+import emailjs from "emailjs-com";
 
 export default function CartCheckoutContainer() {
   const { cart, clearCart, calculateSubtotal } = useCart();
@@ -29,7 +30,7 @@ export default function CartCheckoutContainer() {
         );
       }, 300);
       return;
-    } 
+    }
 
     if (!user) {
       setTimeout(() => {
@@ -98,6 +99,24 @@ export default function CartCheckoutContainer() {
         throw new Error("Erro ao realizar o pedido");
       }
 
+      // Enviar e-mail de confirmação
+      await emailjs.send(
+        "service_tih0e8j",
+        "template_gwd7unn",
+        {
+          to_name: user.nome,
+          to_email: user.email,
+          order_description: description,
+          total_value: total.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+          }),
+          pickup_time: new Date(formattedPickupTime).toLocaleString('en-US', { timeZone: 'UTC', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false }).replace(',', ''),
+        },
+        "UD22PjRWUnZWXhcSS"
+      );
+
+      // Notificação de sucesso
       setTimeout(() => {
         toast.success(
           <div>
@@ -123,6 +142,7 @@ export default function CartCheckoutContainer() {
           }
         );
       }, 300);
+
       clearCart();
       setPaymentMethod(null);
       setPickupTime("");

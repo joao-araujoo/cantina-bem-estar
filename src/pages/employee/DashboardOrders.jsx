@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useAuthCheck from "../../hooks/useAuthCheck";
+import emailjs from "emailjs-com";
 
 export default function DashboardPedidos() {
   const [pedidos, setPedidos] = useState([]);
@@ -13,11 +14,33 @@ export default function DashboardPedidos() {
   const fetchPedidos = async () => {
     try {
       const response = await fetch("http://localhost:3000/pedidos");
-      const data = await response.json();
-      if (data.status) {
-        setPedidos(data.data);
+      const pedidosData = await response.json();
+
+      if (pedidosData.status) {
+        // Para cada pedido, buscar os dados do cliente
+        const pedidosComCodigo = await Promise.all(
+          pedidosData.data.map(async (pedido) => {
+            const clienteResponse = await fetch(
+              `http://localhost:3000/clientes/${pedido.id_cliente}`
+            );
+            const clienteData = await clienteResponse.json();
+
+            if (clienteData.status) {
+              // Adiciona os 4 últimos dígitos do telefone como código de verificação
+              return {
+                ...pedido,
+                codigoVerificacao: clienteData.data.telefone.slice(-4),
+              };
+            } else {
+              console.error(`Erro ao buscar cliente: ${clienteData.msg}`);
+              return { ...pedido, codigoVerificacao: "N/A" }; // Se falhar, retorna "N/A"
+            }
+          })
+        );
+
+        setPedidos(pedidosComCodigo);
       } else {
-        alert(data.msg);
+        alert(pedidosData.msg);
       }
     } catch (error) {
       console.error("Erro ao buscar pedidos:", error);
@@ -67,6 +90,49 @@ export default function DashboardPedidos() {
         },
         body: JSON.stringify({ status }),
       });
+
+      // Se o status for "Entregue", adicionar 1 ao qtd_pedidos do cliente
+      if (status === 4) {
+        const pedidoEntregue = updatedPedidos.find(
+          (p) => p.id_pedido.toString() === pedidoId
+        );
+
+        if (pedidoEntregue) {
+          const clienteResponse = await fetch(
+            `http://localhost:3000/clientes/${pedidoEntregue.id_cliente}`
+          );
+          const clienteData = await clienteResponse.json();
+
+          if (clienteData.status) {
+            const qtdPedidosAtualizada = clienteData.data.qtd_pedidos + 1;
+
+            // Atualiza o campo qtd_pedidos do cliente
+            await fetch(
+              `http://localhost:3000/clientes/${pedidoEntregue.id_cliente}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ qtd_pedidos: qtdPedidosAtualizada }),
+              }
+            );
+
+            // Enviar e-mail ao cliente sobre a atualização do status
+            await emailjs.send(
+              "service_tih0e8j",
+              "template_ybyav67",
+              {
+                to_name: clienteData.data.nome,
+                to_email: clienteData.data.email,
+                order_id: pedidoId,
+                status: statusLabels[status - 1],
+              },
+              "UD22PjRWUnZWXhcSS"
+            );
+          }
+        }
+      }
     } catch (error) {
       console.error("Erro ao atualizar status do pedido:", error);
     }
@@ -166,6 +232,20 @@ export default function DashboardPedidos() {
                           minute: "2-digit",
                         }
                       )}
+                    </span>
+                  </div>
+
+                  <div>
+                    <strong>Código de Verificação:</strong>{" "}
+                    <span style={{ color: "green", fontWeight: "700" }}>
+                      {pedido.codigoVerificacao}
+                    </span>
+                  </div>
+
+                  <div>
+                    <strong>Valor total:</strong>{" "}
+                    <span>
+                      R$ {pedido.valor_total.toFixed(2).replace(".", ",")}
                     </span>
                   </div>
 

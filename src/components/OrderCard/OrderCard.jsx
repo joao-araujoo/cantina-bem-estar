@@ -1,11 +1,21 @@
-import styles from "./styles.module.css";
+import styles from "./styles.module.css"; 
 import PropTypes from "prop-types";
+import { FaInfoCircle } from "react-icons/fa";
 
 OrderCard.propTypes = {
   orderData: PropTypes.object.isRequired,
 };
 
+// Mapeamento de descrições detalhadas do status
+const statusDescriptions = {
+  1: "Seu pedido foi recebido e será preparado em breve.",
+  2: "Seu pedido está sendo preparado.",
+  3: "Seu pedido foi finalizado e está pronto, já pode ser retirado.",
+  4: "Seu pedido foi concluído com sucesso.",
+};
+
 export default function OrderCard({ orderData }) {
+
   // Função para formatar o preço
   const formatPrice = (price) => {
     const priceNumber = Number(price);
@@ -60,18 +70,24 @@ export default function OrderCard({ orderData }) {
         Preço total: <span>{formatPrice(orderData.valor_total)}</span>
       </p>
       <p>
-        Status:{" "}
-        <span className={getStatusStyle(orderData.status)}>
-          {orderData.status === 1
-            ? "Pendente"
-            : orderData.status === 2
-            ? "Em andamento"
-            : orderData.status === 3
-            ? "Finalizado"
-            : orderData.status === 4
-            ? "Entregue"
-            : "Desconhecido"}
-        </span>
+        <div className={styles["status-container"]}>
+          Status:{" "}
+          <span className={getStatusStyle(orderData.status)}>
+            {orderData.status === 1
+              ? "Pendente"
+              : orderData.status === 2
+              ? "Em andamento"
+              : orderData.status === 3
+              ? "Finalizado"
+              : orderData.status === 4
+              ? "Entregue"
+              : "Desconhecido"}
+          </span>
+          <FaInfoCircle
+            title={statusDescriptions[orderData.status]} // Usando o tooltip nativo
+            style={{ cursor: "pointer", marginLeft: "5px" }}
+          />
+        </div>
       </p>
     </div>
   );

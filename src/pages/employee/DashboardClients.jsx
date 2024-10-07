@@ -83,7 +83,7 @@ export default function DashboardClients() {
     setFormData({
       nome: client.nome,
       email: client.email,
-      senha: '',
+      senha: client.senha,
       telefone: client.telefone,
       fotoPerfil: null,
     });

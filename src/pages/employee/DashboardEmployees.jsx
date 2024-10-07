@@ -94,7 +94,7 @@ export default function DashboardFuncionarios() {
     setFormData({
       nome: funcionario.nome,
       email: funcionario.email,
-      senha: '',
+      senha: funcionario.senha,
       telefone: funcionario.telefone,
       permissao: funcionario.permissao,
       fotoPerfil: null,
@@ -151,7 +151,8 @@ export default function DashboardFuncionarios() {
                 <td>{funcionario.nome}</td>
                 <td>{funcionario.email}</td>
                 <td>{funcionario.telefone}</td>
-                <td>{funcionario.permissao}</td>
+                <td>{funcionario.permissao === 1 ? "Funcionário" : "Administrador"}
+                </td>
                 <td>
                   <div className="dropdown">
                     <button className="btn btn-secondary dropdown-toggle" type="button" onClick={() => toggleMenu(funcionario.id_funcionario)}>
@@ -217,8 +218,8 @@ export default function DashboardFuncionarios() {
                     required
                   >
                     <option value="" disabled>Selecione uma permissão</option>
-                    <option value="1">Administrador</option>
-                    <option value="2">Funcionário</option>
+                    <option value="1">Funcionário</option>
+                    <option value="2">Administrador</option>
                   </select>
                 </div>
                 

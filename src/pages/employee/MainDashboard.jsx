@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaClipboardList, FaClock, FaCheckCircle, FaTruck, FaUsers } from 'react-icons/fa';
+import { FaClipboardList, FaClock, FaCheckCircle, FaTruck, FaUsers, FaDollarSign, FaListUl } from 'react-icons/fa';
 import useAuthCheck from '../../hooks/useAuthCheck';
 
 export default function MainDashboard() {
@@ -10,7 +10,9 @@ export default function MainDashboard() {
     finalizado: 0,
     entregue: 0,
     clientes: 0,
-    funcionarios: 0
+    funcionarios: 0,
+    totalPedidos: 0,
+    valorTotalMensal: 0,
   });
 
   const navigate = useNavigate();
@@ -46,6 +48,16 @@ export default function MainDashboard() {
           }, { pendente: 0, atendimento: 0, finalizado: 0, entregue: 0 });
 
           setCounts(prevCounts => ({ ...prevCounts, ...statusCounts }));
+
+          // Calculate total pedidos and valor total mensal
+          const totalPedidos = pedidos.length;
+          const valorTotalMensal = pedidos.filter(pedido => pedido.status === 4).reduce((total, pedido) => total + pedido.valor_total, 0);
+
+          setCounts(prevCounts => ({
+            ...prevCounts,
+            totalPedidos,
+            valorTotalMensal,
+          }));
         } else {
           console.error(pedidosData.msg);
         }
@@ -154,6 +166,31 @@ export default function MainDashboard() {
             <FaUsers size={80} style={{ marginBottom: '10px' }} />
             <h5 className="card-title" style={{ marginBottom: '10px' }}>Funcionários</h5>
             <p className="card-text" style={{ fontSize: '50px', fontWeight: 'bold' }}>{counts.funcionarios}</p>
+          </div>
+        </div>
+      </div>
+      <div className="row mb-4">
+        <div className="col-12">
+          <h3>Estatísticas</h3>
+        </div>
+        <div className="col">
+          <div
+            className="card text-white bg-success"
+            style={{ borderRadius: '15px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', cursor: 'pointer' }}
+          >
+            <FaListUl size={80} style={{ marginBottom: '10px' }} />
+            <h5 className="card-title" style={{ marginBottom: '10px' }}>Total de Pedidos</h5>
+            <p className="card-text" style={{ fontSize: '50px', fontWeight: 'bold' }}>{counts.totalPedidos}</p>
+          </div>
+        </div>
+        <div className="col">
+          <div
+            className="card text-white bg-warning"
+            style={{ borderRadius: '15px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '20px', cursor: 'pointer' }}
+          >
+            <FaDollarSign size={80} style={{ marginBottom: '10px' }} />
+            <h5 className="card-title" style={{ marginBottom: '10px' }}>Valor Total Mensal</h5>
+            <p className="card-text" style={{ fontSize: '50px', fontWeight: 'bold' }}>R$ {counts.valorTotalMensal.toFixed(2).replace('.', ',')}</p>
           </div>
         </div>
       </div>

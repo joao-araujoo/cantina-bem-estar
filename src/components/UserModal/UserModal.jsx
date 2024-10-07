@@ -1,17 +1,22 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./styles.module.css";
 import { RiFileList3Fill } from "react-icons/ri";
 import { MdManageAccounts, MdLogout } from "react-icons/md";
 import { FaTrophy } from "react-icons/fa";
 import { IoMdHelpCircle } from "react-icons/io";
 import { useAuth } from "../../contexts/AuthContext";
+import { useCart } from "../../contexts/CartContext";
 
 export default function UserModal() {
   const { user, logout } = useAuth();
+  const { clearCart } = useCart();
+  const navigate = useNavigate();
 
   const handleLogout = (e) => {
-    e.preventDefault(); // Previne o comportamento padrão do link
-    logout(); // Chama a função de logout
+    e.preventDefault(); 
+    logout();
+    clearCart();
+    navigate("/login");
   };
 
   return (
