@@ -12,11 +12,11 @@
 - Arrumar id_cliente ao entrar na página "Pedidos" ✅
 - Adicionar código pra retirada de pedido igual ifood (final do número) ✅
 - Colocar um "i" de info nos status na página de pedidos pro usuário saber com detalhes (pendente = "seu pedido foi recebido e será preparado em breve", em andamento = "seu pedido está sendo preparado", finalizado = "seu pedido foi finalizado e está pronto já pode ser retirado", entregue = "seu pedido foi concluido com sucesso") ✅
-- Trocar o carrossel e adicionar imagem de marmitas reais ❌
+- Trocar o carrossel e adicionar imagem de marmitas reais ✅ (Apenas troquei para imagens de maior qualidade)
 - Mandar mensagem com os status do pedido (zap ou email) ✅
 - Arrumar atualização de imagens de produtos do dashboard ❌
-- Adicionar gráficos na página principal do dashboard e cards de valores totais, etc ❌ (gráfico de valor de vendas)
+- Adicionar gráficos na página principal do dashboard e cards de valores totais, etc ✅ (Apenas total de pedidos e valor total mensal)
 - Arrumar a edição de imagem de perfil ❌
 - Arrumar carrinho do localstorage que fica o mesmo quando troca de conta ✅
-- ARRUMAR O FUSO HORARIO DAS HORAS!!!! ❌ **************
+- ARRUMAR O FUSO HORARIO DAS HORAS!!!! ✅
 - Somar quantidade de pedidos ao fazer pedido ✅

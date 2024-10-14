@@ -216,20 +216,16 @@ export default function DashboardPedidos() {
 
                   <div>
                     <strong>Horário de Retirada:</strong> 🕑{" "}
-                    <span
-                      style={{
-                        color:
-                          new Date(pedido.horario_retirada).getTime() >
-                          Date.now()
-                            ? "red"
-                            : "black",
-                      }}
-                    >
-                      {new Date(pedido.horario_retirada).toLocaleTimeString(
-                        [],
+                    <span>
+                      {new Date(pedido.horario_retirada).toLocaleString(
+                        "pt-BR",
                         {
-                          hour: "2-digit",
-                          minute: "2-digit",
+                          month: "2-digit", // Mês por extenso
+                          day: "2-digit", // Dia com dois dígitos
+                          hour: "2-digit", // Hora com dois dígitos
+                          minute: "2-digit", // Minutos com dois dígitos
+                          second: "2-digit", // Segundos com dois dígitos
+                          timeZone: "UTC", // Força o uso do fuso horário UTC
                         }
                       )}
                     </span>
@@ -252,14 +248,13 @@ export default function DashboardPedidos() {
                   <button
                     onClick={() => handleDelete(pedido.id_pedido)}
                     style={{
-                      backgroundColor: "red",
+                      backgroundColor: "#dc3545",
                       color: "#fff",
                       border: "none",
-                      borderRadius: "5px",
                       padding: "0.5rem 1rem",
+                      borderRadius: "5px",
+                      marginTop: "0.5rem",
                       cursor: "pointer",
-                      width: "100%",
-                      marginTop: "10px",
                     }}
                   >
                     Excluir

@@ -71,10 +71,9 @@ export default function CartCheckoutContainer() {
       .join(", ");
 
     const now = new Date();
-    const formattedPickupTime = new Date(
-      `${now.toISOString().split("T")[0]}T${pickupTime}:00Z`
-    ).toISOString();
-
+    const pickupTimeLocal = new Date(`${now.toISOString().split("T")[0]}T${pickupTime}`);
+    const formattedPickupTimeUTC = new Date(pickupTimeLocal.getTime() - (pickupTimeLocal.getTimezoneOffset() * 60000)).toISOString();
+    
     const orderData = {
       id_cliente: user.id_cliente,
       descricao: description,
@@ -83,7 +82,7 @@ export default function CartCheckoutContainer() {
       id_produtos: JSON.stringify(cart),
       valor_total: total,
       pagamento: paymentMethod,
-      horario_retirada: formattedPickupTime,
+      horario_retirada: formattedPickupTimeUTC,
     };
 
     try {
@@ -111,7 +110,7 @@ export default function CartCheckoutContainer() {
             style: "currency",
             currency: "BRL",
           }),
-          pickup_time: new Date(formattedPickupTime).toLocaleString('en-US', { timeZone: 'UTC', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false }).replace(',', ''),
+          pickup_time: new Date(formattedPickupTimeUTC).toLocaleString('en-US', { timeZone: 'UTC', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false }).replace(',', ''),
         },
         "UD22PjRWUnZWXhcSS"
       );

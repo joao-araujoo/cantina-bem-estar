@@ -278,25 +278,25 @@ export default function Home() {
           <SwiperSlide>
             <img
               style={{ width: "100%", height: "50vh", objectFit: "cover" }}
-              src="https://i.pinimg.com/originals/3e/cb/b2/3ecbb22f1f1dc96a82546d094f667fc7.png"
+              src="/carousel-images/flat-lay-assortment-with-delicious-brazilian-food.jpg"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
               style={{ width: "100%", height: "50vh", objectFit: "cover" }}
-              src="https://t3.ftcdn.net/jpg/04/57/73/82/360_F_457738290_y8fywtzTyfT2pQzU5mL1OpKHHAERc6kS.jpg"
+              src="/carousel-images/delicioso-arranjo-de-comida-plana-lay.jpg"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
               style={{ width: "100%", height: "50vh", objectFit: "cover" }}
-              src="https://jcconcursos.com.br/media/_versions/noticia/prato-feito_1_widelg.jpg"
+              src="/carousel-images/comida-e-suco-deliciosos-de-alto-angulo.jpg"
             />
           </SwiperSlide>
           <SwiperSlide>
             <img
               style={{ width: "100%", height: "50vh", objectFit: "cover" }}
-              src="https://ibis.accor.com/editorial/imagerie/article/comida-mineira-pratos-tipicos-de-cada-regiao-do-brasil-358a_660x440.jpg"
+              src="/carousel-images/tasty-food-arrangement-top-view.jpg"
             />
           </SwiperSlide>
         </Swiper>
