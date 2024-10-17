@@ -47,7 +47,7 @@ export default function EditProfileForm({ user, onSave }) {
       <form onSubmit={handleSubmit} className={styles.wrapper}>
         <div className={styles.profilePictureWrapper}>
           <img
-            src={profilePicture}
+            src={`http://localhost:3000/${profilePicture}`}
             alt={user.nome}
             className={styles.profilePicture}
           />
