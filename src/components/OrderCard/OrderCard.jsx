@@ -4,6 +4,7 @@ import { FaInfoCircle } from "react-icons/fa";
 
 OrderCard.propTypes = {
   orderData: PropTypes.object.isRequired,
+  verificationCode: PropTypes.string.isRequired, // Adiciona a prop verificationCode
 };
 
 // Mapeamento de descrições detalhadas do status
@@ -14,8 +15,7 @@ const statusDescriptions = {
   4: "Seu pedido foi concluído com sucesso.",
 };
 
-export default function OrderCard({ orderData }) {
-
+export default function OrderCard({ orderData, verificationCode }) {
   // Função para formatar o preço
   const formatPrice = (price) => {
     const priceNumber = Number(price);
@@ -65,6 +65,9 @@ export default function OrderCard({ orderData }) {
       </p>
       <p>
         Observações: <span>{orderData.obs || "Sem observações"}</span>
+      </p>
+      <p>
+        Código de verificação: <span>{verificationCode}</span>
       </p>
       <p>
         Preço total: <span>{formatPrice(orderData.valor_total)}</span>

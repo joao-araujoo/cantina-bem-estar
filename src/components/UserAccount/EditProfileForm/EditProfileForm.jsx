@@ -4,6 +4,9 @@ import SectionsContentHeader from "../../SectionsContentHeader/SectionsContentHe
 import styles from "../styles.module.css";
 import { HiPencilAlt } from "react-icons/hi";
 import $ from 'jquery'; // Importa jQuery
+import 'jquery-mask-plugin'; // Importa o plugin de máscara
+import { toast } from 'react-toastify'; // Importa o Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Importa os estilos do Toastify
 
 export default function EditProfileForm({ user, onSave }) {
   const [name, setName] = useState(user.nome);
@@ -21,17 +24,37 @@ export default function EditProfileForm({ user, onSave }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("As senhas não coincidem!");
+
+    // Verifica se algum campo está vazio (exceto a senha)
+    if (!name || !email || !telefone) {
+      toast.error("Todos os campos são obrigatórios, exceto a senha!");
       return;
     }
 
+    // Verifica se o telefone está no formato correto
+    const telefoneFormatado = /^\(\d{2}\) \d{5}-\d{4}$/; // Expressão regular para validar a máscara
+    if (!telefone.match(telefoneFormatado)) {
+      toast.error("O telefone está incompleto ou em formato incorreto!");
+      return;
+    }
+
+    // Verifica se as senhas coincidem, se for fornecida uma senha
+    if (password || confirmPassword) {
+      if (password !== confirmPassword) {
+        toast.error("As senhas não coincidem!");
+        return;
+      }
+    }
+
+    // Chama a função de salvar com os dados
     onSave({
       nome: name,
       email: email,
-      senha: password,
+      senha: password || undefined, // Envia undefined se a senha não for alterada
       telefone: telefone,
     });
+
+    toast.success("Perfil atualizado com sucesso!");
   };
 
   const handleProfilePictureChange = (e) => {

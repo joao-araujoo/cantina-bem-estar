@@ -43,6 +43,11 @@ export default function Orders() {
     return false;
   });
 
+  // Função para extrair os últimos 4 dígitos do telefone do cliente
+  const getVerificationCode = (telefone) => {
+    return telefone.slice(-4); // Pega os últimos 4 dígitos do telefone
+  };
+
   return (
     <>
       <SectionsContentHeader title="Meus Pedidos" />
@@ -95,7 +100,11 @@ export default function Orders() {
       </div>
       {filteredOrders.length > 0 ? (
         filteredOrders.map((order) => (
-          <OrderCard orderData={order} key={order.id_pedido} />
+          <OrderCard
+            orderData={order}
+            verificationCode={getVerificationCode(user.telefone)} // Passa o código de verificação para o card
+            key={order.id_pedido}
+          />
         ))
       ) : (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
